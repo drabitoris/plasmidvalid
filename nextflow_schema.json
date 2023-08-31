@@ -36,6 +36,10 @@
         "work_dir": {
             "type": "string",
             "default": "/vast/scratch/users/cmero.ma/nanopore"
+        },
+        "process": {
+            "type": "string",
+            "default": "slurm"
         }
     }
 }
