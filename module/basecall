@@ -4,11 +4,10 @@ process baseCall {
     // Other Slurm-specific options
     clusterOptions "--gres=gpu:${params.gpu_config}"
     input:
-        file("workpath_full"),
+        file("workpath_full")
         file("projectpath_full")
     output:
-        file("*.fastq.gz"),
-        val("${task.exitStatus}")
+        file("*.fastq.gz")
     script:
     """
     module load dorado
