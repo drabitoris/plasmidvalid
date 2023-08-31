@@ -5,7 +5,7 @@ workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sa
 projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
 process baseCall {
     queue 'gpuq_interactive' // Slurm partition name
-    memory '${params.gpu_mem}' // Memory requirement
+    memory params.gpu_mem.toGiga() // Memory requirement
     // Other Slurm-specific options
     clusterOptions "--gres=gpu:${params.gpu_config}"
     input:
