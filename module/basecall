@@ -18,7 +18,7 @@ process baseCall {
     done
     """
 }
-process baseCall_backup {
+process baseCallbackUp {
     input:
         file("projectpath_full")
     output:
