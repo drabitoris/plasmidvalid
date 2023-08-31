@@ -46,6 +46,7 @@ def helpMessage() {
     foo
     """.stripIndent()
 }
+
 workflow {
     if (params.project == null || params.run == null || params.sample == null) {
         helpMessage()
