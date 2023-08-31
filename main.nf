@@ -47,11 +47,10 @@ def helpMessage() {
     """.stripIndent()
 }
 workflow {
-    if (params.help || params.project == null || params.run == null || params.sample == null) {
+    if (params.project == null || params.run == null || params.sample == null) {
         helpMessage()
         exit 1
     }
-
     baseCall(workpath_ch, projectpath_ch)
     baseCall_backup(projectpath_ch)
 }
