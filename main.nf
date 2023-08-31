@@ -35,7 +35,7 @@ process baseCall_backup {
     script:
     """
     STATUS="Backup basecalled results FAILED"
-    tar -cvf ${params.project}_sup_basecalls.tar ${basecall}
+    tar -cvf ${params.project}_sup_basecalls.tar ${basecalls/${bc}/${bc}.fastq.gz}
     rsync -av ${params.project}_sup_basecalls.tar ${params.backup_dir}
     STATUS="Backup basecalled results completed Successfully"
     """
