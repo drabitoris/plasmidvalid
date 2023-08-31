@@ -56,8 +56,8 @@ workflow {
         helpMessage()
         exit 1
     }
-    Channel workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sample}/${params.run}", checkIfExists: true)
-    Channel projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
+    workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sample}/${params.run}", checkIfExists: true)
+    projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
 
     baseCall(workpath_ch, projectpath_ch)
     baseCall_backup(projectpath_ch)
