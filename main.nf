@@ -12,7 +12,7 @@ process baseCall {
         file("workpath_full")
         file("projectpath_full")
     output:
-        file("basecalls/${bc}/${bc}.fastq.gz")
+        file("*.fastq.gz")
         val("${task.exitStatus}")
     script:
         def MODEL = "${params.basecall_model}"
@@ -35,7 +35,7 @@ process baseCall_backup {
     script:
     """
     STATUS="Backup basecalled results FAILED"
-    tar -cvf ${params.project}_sup_basecalls.tar ${basecalls/${bc}/${bc}.fastq.gz}
+    tar -cvf ${params.project}_sup_basecalls.tar basecalls/
     rsync -av ${params.project}_sup_basecalls.tar ${params.backup_dir}
     STATUS="Backup basecalled results completed Successfully"
     """
@@ -59,5 +59,5 @@ workflow {
     }
 
     baseCall(workpath_ch, projectpath_ch)
-    baseCall_backup(projectpath_ch, basecalls/${bc}/${bc}.fastq.gz)
+    baseCall_backup(projectpath_ch)
 }
