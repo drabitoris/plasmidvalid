@@ -9,8 +9,8 @@ process baseCall {
     // Other Slurm-specific options
     clusterOptions "--gres=gpu:${params.gpu_config}"
     input:
-        file("workpath_full") from workpath_ch
-        file("projectpath_full") from projectpath_ch
+        file("workpath_full")
+        file("projectpath_full")
     output:
         file("basecalls/${bc}/*.fastq.gz"), emit: basecall
         val("${task.exitStatus}"), emit: status
@@ -28,8 +28,8 @@ process baseCall {
 }
 process baseCall_backup {
     input:
-        file("projectpath_full") from projectpath_ch
-        file("basecall") from baseCall.basecall
+        file("projectpath_full")
+        file("basecall")
     output:
         val("${task.exitStatus}"), emit: status
     script:
