@@ -37,7 +37,7 @@
             "type": "string",
             "default": "/vast/scratch/users/cmero.ma/nanopore"
         },
-        "process": {
+        "process.executor": {
             "type": "string",
             "default": "slurm"
         }
