@@ -1,6 +1,8 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+include { baseCall } from "./modules/basecall"
+include { baseCall_backup } from "./modules/basecall"
 workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sample}/${params.run}", checkIfExists: true)
 projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
 process baseCall {
