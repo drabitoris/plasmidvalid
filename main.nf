@@ -56,8 +56,11 @@ workflow {
         helpMessage()
         exit 1
     }
+    workpath_full = params.work_dir / params.project / params.sample / params.run
     workpath_ch = Channel.fromPath(params.work_dir + "/" + params.project + "/" + params.sample + "/" + params.run, checkIfExists: true)
+    projectpath_full = params.work_dir / params.project
     projectpath_ch = Channel.fromPath(params.work_dir + "/" + params.project, checkIfExists: true)
+    def 
     baseCall(
         workpath_full,
         params.basecall_model,
