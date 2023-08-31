@@ -59,5 +59,5 @@ workflow {
     }
 
     baseCall(workpath_ch, projectpath_ch)
-    baseCall_backup(projectpath_ch)
+    baseCall_backup(projectpath_ch, basecalls/${bc}/${bc}.fastq.gz)
 }
