@@ -14,7 +14,7 @@ process baseCall {
         file("basecalls/${bc}/*.fastq.gz"), emit: basecall
         val("${task.exitStatus}"), emit: status
     script:
-        def MODEL = ${params.basecall_model}
+        def MODEL = "${params.basecall_model}"
     """
     STATUS="Basecalling by dorado FAILED"
     module load dorado
