@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 process baseCall {
+    debug = true
     queue 'gpuq_interactive' // Slurm partition name
     memory '${params.gpu_mem}' // Memory requirement
     // Other Slurm-specific options
@@ -11,7 +12,7 @@ process baseCall {
         file("workpath_full") from workpath_ch
         file("projectpath_full") from projectpath_ch
     output:
-        file(basecalls/$bc/*.fastq.gz), emit: basecall
+        file(basecalls/${bc}/*.fastq.gz), emit: basecall
         val("${task.exitStatus}"), emit: status
     script:
         def MODEL = ${params.basecall_model}
@@ -19,8 +20,8 @@ process baseCall {
     STATUS="Basecalling by dorado FAILED"
     module load dorado
     for bc in barcode{01..96} unclassified mixed; do
-        mkdir -p ${workpath_full}/basecalls/$bc
-        dorado basecaller --emit-fastq $MODEL ${workpath_full}/pod5_pass/$bc | gzip > ${projectpath_full}/basecalls/$bc/$bc.fastq.gz
+        mkdir -p ${workpath_full}/basecalls/${bc}
+        dorado basecaller --emit-fastq ${MODEL} ${workpath_full}/pod5_pass/$bc | gzip > ${projectpath_full}/basecalls/${bc}/${bc}.fastq.gz
     done
     STATUS="Basecalling by dorado completed Successfully"
     """
