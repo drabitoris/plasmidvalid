@@ -3,7 +3,6 @@
 nextflow.enable.dsl = 2
 
 process baseCall {
-    executor 'slurm'
     queue 'gpuq_interactive' // Slurm partition name
     memory '${params.gpu_mem}' // Memory requirement
     // Other Slurm-specific options
