@@ -29,7 +29,6 @@ process baseCall {
 process baseCall_backup {
     input:
         file("projectpath_full")
-        file("basecalls/${bc}/${bc}.fastq.gz")
     output:
         val("${task.exitStatus}")
     script:
