@@ -11,7 +11,7 @@ process baseCall {
         file("workpath_full") from workpath_ch
         file("projectpath_full") from projectpath_ch
     output:
-        file(basecalls/${bc}/*.fastq.gz), emit: basecall
+        file("basecalls/${bc}/*.fastq.gz"), emit: basecall
         val("${task.exitStatus}"), emit: status
     script:
         def MODEL = ${params.basecall_model}
