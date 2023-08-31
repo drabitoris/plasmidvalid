@@ -30,10 +30,8 @@ process baseCall_backup {
         val("${task.exitStatus}")
     script:
     """
-    STATUS="Backup basecalled results FAILED"
-    tar -cvf ${params.project}_sup_basecalls.tar basecalls/
+    tar -cvf ${params.project}_sup_basecalls.tar ${projectpath_full}/basecalls/
     rsync -av ${params.project}_sup_basecalls.tar ${params.backup_dir}
-    STATUS="Backup basecalled results completed Successfully"
     """
 }
 
