@@ -1,7 +1,8 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-
+workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sample}/${params.run}", checkIfExists: true)
+projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
 process baseCall {
     queue 'gpuq_interactive' // Slurm partition name
     memory '${params.gpu_mem}' // Memory requirement
@@ -56,8 +57,6 @@ workflow {
         helpMessage()
         exit 1
     }
-    workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sample}/${params.run}", checkIfExists: true)
-    projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
 
     baseCall(workpath_ch, projectpath_ch)
     baseCall_backup(projectpath_ch)
