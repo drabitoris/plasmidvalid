@@ -12,7 +12,7 @@ process baseCall {
         file("workpath_full")
         file("projectpath_full")
     output:
-        file("basecalls/${bc}/*.fastq.gz"), emit: basecall
+        file("basecalls/*"), emit: basecall
         val("${task.exitStatus}"), emit: status
     script:
         def MODEL = "${params.basecall_model}"
