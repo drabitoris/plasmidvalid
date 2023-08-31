@@ -12,8 +12,8 @@ process baseCall {
         file("workpath_full")
         file("projectpath_full")
     output:
-        file("basecalls/*"), emit: basecall
-        val("${task.exitStatus}"), emit: status
+        file("basecalls/${bc}/${bc}.fastq.gz")
+        val("${task.exitStatus}")
     script:
         def MODEL = "${params.basecall_model}"
     """
@@ -29,9 +29,9 @@ process baseCall {
 process baseCall_backup {
     input:
         file("projectpath_full")
-        file("basecall")
+        file("basecalls/${bc}/${bc}.fastq.gz")
     output:
-        val("${task.exitStatus}"), emit: status
+        val("${task.exitStatus}")
     script:
     """
     STATUS="Backup basecalled results FAILED"
