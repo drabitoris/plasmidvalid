@@ -1,6 +1,6 @@
 process test1 {
     input:
-        path("workpath_full"),
+        path("workpath_full")
         path("projectpath_full")
     output:
         path("projectpath_full")
