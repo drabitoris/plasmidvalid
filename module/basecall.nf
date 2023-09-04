@@ -7,7 +7,7 @@ process test1 {
         path("workpath_full"),
         path("projectpath_full")
     output:
-        val("${task.exitStatus}")
+        path("projectpath_full")
     script:
     """
     module load dorado
@@ -22,7 +22,7 @@ process backUp {
     input:
         path("projectpath_full")
     output:
-        val("${task.exitStatus}")
+        path("projectpath_full")
     script:
     """
     tar -cvf ${params.project}_sup_basecalls.tar ${projectpath_full}/basecalls/
