@@ -1,4 +1,6 @@
 process test1 {
+    queue 'gpuq_interactive'
+    clusterOptions "--gres=gpu:${params.gpu_config}"
     input:
         path("workpath_full")
         path("projectpath_full")
