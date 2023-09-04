@@ -1,6 +1,6 @@
 process test1 {
     queue "${params.gpu_partition}"
-    clusterOptions "--gres=gpu:${params.gpu_config} --mem=${params.gpu_mem} --time 3-0:0:0"
+    clusterOptions "--gres=gpu:${params.gpu_config} --mem=${params.gpu_mem} --time=1-0:0:0"
     input:
         file("workpath_full")
         file("projectpath_full")
