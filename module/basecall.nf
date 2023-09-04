@@ -1,4 +1,4 @@
-process baseCall {
+process test1 {
     queue 'gpuq_interactive' // Slurm partition name
     memory params.gpu_mem.toGiga() // Memory requirement
     // Other Slurm-specific options
