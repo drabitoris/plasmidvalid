@@ -11,7 +11,8 @@ process test1 {
     script:
     """
     module load dorado
-    for bc in barcode{01..96} unclassified mixed; do
+    for bc in barcode{01..96} unclassified mixed
+    do
         mkdir -p ${workpath_full}/basecalls/\$bc
         dorado basecaller --emit-fastq ${params.basecall_model} ${workpath_full}/pod5_pass/\$bc | gzip > ${projectpath_full}/basecalls/\$bc/\$bc.fastq.gz
     done
