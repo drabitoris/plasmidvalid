@@ -29,6 +29,10 @@
             "type": "string",
             "default": "10G"
         },
+        "gpu_partition": {
+            "type": "string",
+            "default": "gpuq_interactive"
+        },
         "backup_dir": {
             "type": "string",
             "default": "/stornext/Projects/promethion/promethion_access/lab_bowden/G000309_plasmid-sequencing/long_term/fastq/"
