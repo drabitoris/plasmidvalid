@@ -19,7 +19,7 @@ process test1 {
 }
 process backUp {
     input:
-        file("projectpath_full")
+        path("projectpath_full")
     output:
         val("${task.exitStatus}")
     script:
