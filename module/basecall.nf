@@ -4,8 +4,8 @@ process test1 {
     // Other Slurm-specific options
     clusterOptions "--gres=gpu:${params.gpu_config}"
     input:
-        file("workpath_full")
-        file("projectpath_full")
+        path("workpath_full")
+        path("projectpath_full")
     output:
         file("*.fastq.gz")
     script:
