@@ -8,7 +8,7 @@ process test1 {
         path("projectpath_full")
     script:
     """
-    module load dorado
+    module load dorado/0.3.0
     for bc in barcode{01..96} unclassified mixed
     do
         mkdir -p ${projectpath_full}/basecalls/\$bc
