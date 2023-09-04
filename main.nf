@@ -8,5 +8,5 @@ workflow {
     workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sample}/${params.run}", checkIfExists: true)
     projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
     main:
-        backUp(projectpath_ch)
+        test1(workpath_ch,projectpath_ch)
 }
