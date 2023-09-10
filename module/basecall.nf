@@ -1,4 +1,4 @@
-process test1 {
+process basecall {
     queue "${params.gpu_partition}"
     clusterOptions "--gres=gpu:${params.gpu_config} --mem=${params.gpu_mem} --time=0-03:00 --cpus-per-task 5"
     input:
