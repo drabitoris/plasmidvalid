@@ -28,16 +28,16 @@ process assembling {
     input:
         path("trimmed_fastq")
     output:
-        path("trimmed_fastq")
+        path("assmed_fastq")
     script:
         name = sample_id
     """
     flye \
-        --${params.flye_quality} \${SUBSET} \
+        --${params.flye_quality} \
         --deterministic \
         --threads $task.cpus \
         --genome-size $approx_size \
-        --out-dir "assm_\${SUBSET_NAME}" \
+        --out-dir "assm_\${BOO_NAME}" \
         --meta
     """
 }
@@ -45,20 +45,16 @@ process medakaPolishAssembly {
     label "medaka"
     cpus params.threads
     input:
-        tuple val(sample_id), path(draft), path(fastq), val(medaka_model)
+        path("assmed_fastq")
     output:
-        tuple val(sample_id), path("*.final.fasta"), emit: polished
-        tuple val(sample_id), env(STATUS), emit: status
-        tuple val(sample_id), path("${sample_id}.final.fastq"), emit: assembly_qc
+        path("${sample_id}.final.fastq")
     script:
         def model = medaka_model
     
     """
-    STATUS="Failed to polish assembly with Medaka"
     medaka_consensus -i "${fastq}" -d "${draft}" -m "${model}" -o . -t $task.cpus -f -q
     echo ">${sample_id}" >> "${sample_id}.final.fasta"
     sed "2q;d" consensus.fasta >> "${sample_id}.final.fasta"
     mv consensus.fasta "${sample_id}.final.fastq"
-    STATUS="Completed successfully"
     """
 }
