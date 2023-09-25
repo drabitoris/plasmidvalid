@@ -2,7 +2,7 @@ process trimming {
     input:
         path("fastq")
     output:
-        path("trimmed_fastq")
+        path("*.trimmed_fastq")
     script:
     """
     porechop -i ${fastq} > ${fastq}.trimmed.fastq.gz
