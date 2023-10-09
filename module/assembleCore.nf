@@ -30,7 +30,7 @@ process downSampling {
 }
 process assembling {
     input:
-        path("trimmed_fastq")
+        path path ("downsampled_fastq") from (params.coverage > 50 ? trimmed_out : downsampled_out)
     output:
         path("assmed_fastq")
     script:
@@ -57,8 +57,24 @@ process medakaPolishAssembly {
     
     """
     medaka_consensus -i "${fastq}" -d "${draft}" -m "${model}" -o . -t $task.cpus -f -q
-    echo ">${sample_id}" >> "${sample_id}.final.fasta"
-    sed "2q;d" consensus.fasta >> "${sample_id}.final.fasta"
-    mv consensus.fasta "${sample_id}.final.fastq"
+    """
+}
+process MedakaPolish {
+    label (params.GPU == "ON" ? 'with_gpus': 'with_cpus')
+    errorStrategy 'finish'
+    publishDir "$results_path/medaka_consensus3"
+    beforeScript 'chmod o+rw .'
+
+    input:
+    set str_name, path(reads), path(rotated) from read_phased_medaka3.filter{ it.get(2).countFasta()>=1} 
+    
+    output:
+    set str_name, file("${str_name}_racon_medaka/consensus.fasta") into medaka_consensus
+    
+    script:
+    """
+    chmod -R a+rw ./
+    medaka_consensus -i ${reads} -d ${rotated} -o ${str_name}_racon_medaka -m $params.medaka_model
+    chmod -R a+rw ./
     """
 }
