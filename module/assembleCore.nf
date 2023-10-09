@@ -5,7 +5,11 @@ process trimming {
         path("*.trimmed_fastq")
     script:
     """
-    porechop -i ${fastq} > ${fastq}.trimmed.fastq.gz
+    porechop -i ${fastq} \
+        --format fastq.gz \
+        --end_threshold  50 --extra_end_trim 50 \
+        --discard_middle --middle_threshold 80 \
+        > ${fastq}.trimmed.fastq.gz
     """
 }
 process downSampling {
