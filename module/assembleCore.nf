@@ -1,8 +1,8 @@
 process trimming {
     input:
-        path("fastq")
+        path("fastq") from basecalled_out
     output:
-        path("*.trimmed_fastq")
+        path("*.trimmed_fastq") into trimmed_out
     script:
     """
     porechop -i ${fastq} \
@@ -14,9 +14,9 @@ process trimming {
 }
 process downSampling {
     input:
-        path("trimmed_fastq")
+        path("trimmed_fastq") from trimmed_out
     output:
-        path("*.downsampled.fastq.gz")
+        path("*.downsampled.fastq.gz") into downsampled_out
     when:
         param.coverage > 50
     script:
