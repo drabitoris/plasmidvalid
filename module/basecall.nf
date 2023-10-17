@@ -5,7 +5,7 @@ process basecall {
         path("workpath_full")
         path("projectpath_full")
     output:
-        path("projectpath_full")
+        path("projectpath_full") into basecalled_out
     script:
     """
     module load dorado/0.3.0
