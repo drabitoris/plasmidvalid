@@ -1,4 +1,5 @@
 process trimming {
+    label "plasmid"
     input:
         path("fastq") from basecalled_out
     output:
@@ -13,6 +14,7 @@ process trimming {
     """
 }
 process downSampling {
+    label "plasmid"
     input:
         path("trimmed_fastq") from trimmed_out
     output:
@@ -29,6 +31,7 @@ process downSampling {
     """
 }
 process assembling {
+    label "plasmid"
     input:
         path path ("downsampled_fastq") from (params.coverage > 50 ? trimmed_out : downsampled_out)
     output:
