@@ -25,7 +25,7 @@ process downSampling {
         name = sample_id
     """
     rasusa \
-        --coverage $target \
+        --coverage 180 \
         --genome-size $approx_size \
         --input ${name}.trimmed.fastq.gz > ${name}.downsampled.fastq.gz
     """
@@ -42,7 +42,7 @@ process assembling {
     flye \
         --${params.flye_quality} \
         --deterministic \
-        --threads $task.cpus \
+        --threads 8 \
         --genome-size $approx_size \
         --out-dir "assm_\${BOO_NAME}" \
         --meta
