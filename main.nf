@@ -12,6 +12,4 @@ workflow {
     main:
         basecall(workpath_ch,projectpath_ch)
         trimming()
-        downSampling()
-        assembling()
 }
