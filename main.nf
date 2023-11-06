@@ -10,7 +10,7 @@ workflow {
     workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sample}/${params.run}/pod5_pass/", checkIfExists: true)
     projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
     main:
-        baseCall(workpath_ch,projectpath_ch)
+        basecall(workpath_ch,projectpath_ch)
         trimming()
         downSampling()
         assembling()
