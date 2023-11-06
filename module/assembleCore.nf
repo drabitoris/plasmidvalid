@@ -63,7 +63,7 @@ process medakaPolishAssembly {
     """
 }
 process MedakaPolish {
-    label (params.GPU == "ON" ? 'with_gpus': 'with_cpus')
+    label "medaka"
     errorStrategy 'finish'
     publishDir "$results_path/medaka_consensus3"
     beforeScript 'chmod o+rw .'
