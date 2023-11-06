@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
-include { baseCall } from "./module/basecall"
+include { basecall } from "./module/basecall"
 include { backUp } from "./module/basecall"
 include { trimming } from "./module/assembleCore"
 include { downSampling } from "./module/assembleCore"
