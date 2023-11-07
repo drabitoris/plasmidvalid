@@ -11,15 +11,15 @@
         },
         "project": {
             "type": "string",
-            "default": null
+            "default": "None"
         },
         "sample": {
             "type": "string",
-            "default": null
+            "default": "None"
         },
         "run": {
             "type": "string",
-            "default": null
+            "default": "None"
         },
         "gpu_config": {
             "type": "string",
@@ -41,9 +41,21 @@
             "type": "string",
             "default": "/vast/scratch/users/cmero.ma/nanopore"
         },
-        "process.executor": {
+        "approx_size": {
             "type": "string",
-            "default": "slurm"
+            "default": null
+        },
+        "trim_length": {
+            "type": "integer",
+            "default": 150
+        },
+        "trim_min_len": {
+            "type": "integer",
+            "default": 100
+        },
+        "trim_min_q": {
+            "type": "integer",
+            "default": 7
         }
     }
 }
