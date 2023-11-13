@@ -8,6 +8,5 @@ workflow {
     workpath_ch = Channel.fromPath("${params.work_dir}/${params.project}/${params.sample}/${params.run}/pod5_pass/", checkIfExists: true)
     projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
     main:
-        basecall(workpath_ch,projectpath_ch)
-        trimming()
+        trimmed_fastq = basecall(workpath_ch, projectpath_ch) | trimming
 }
