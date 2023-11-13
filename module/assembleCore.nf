@@ -1,9 +1,9 @@
 process trimming {
     label "plasmid"
     input:
-        path("fastq") from basecalled_out
+        path("fastq")
     output:
-        path("*.trimmed_fastq") into trimmed_out
+        path("*.trimmed_fastq")
     script:
     """
     porechop -i ${fastq} \
