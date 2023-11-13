@@ -1,7 +1,7 @@
 process trimming {
     label "plasmid"
     input:
-        path("fastq")
+        path("fastq") from basecalled
     output:
         path("*.trimmed_fastq"), emit: trimmed
     script:
