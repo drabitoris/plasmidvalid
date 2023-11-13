@@ -1,7 +1,7 @@
 process trimming {
     label "plasmid"
     input:
-        path("${projectpath_full}/basecalls/foo/foo.fastq.gz")
+        path("fastq")　from basecall
     output:
         path("*.trimmed_fastq")
     script:
