@@ -8,7 +8,7 @@ process basecall {
         path("*.fastq.gz"), emit: basecalled
     script:
     """
-    module load dorado/0.3.0
+    module load dorado
     mkdir -p ${projectpath_full}/basecalls/foo
     dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} ${workpath_full}/foo | gzip > ${projectpath_full}/basecalls/foo/foo.fastq.gz
     """
