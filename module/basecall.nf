@@ -9,11 +9,8 @@ process basecall {
     script:
     """
     module load dorado/0.3.0
-    for bc in barcode{01..96} unclassified mixed
-    do
-        mkdir -p ${projectpath_full}/basecalls/\$bc
-        dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} ${workpath_full}/\$bc | gzip > ${projectpath_full}/basecalls/\$bc/\$bc.fastq.gz
-    done
+    mkdir -p ${projectpath_full}/basecalls/\$bc
+    dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} ${workpath_full}/\$bc | gzip > ${projectpath_full}/basecalls/\$bc/\$bc.fastq.gz
     """
 }
 process backUp {
