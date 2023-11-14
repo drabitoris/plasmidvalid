@@ -10,7 +10,7 @@ process basecall {
     """
     module load dorado
     mkdir -p ${projectpath_full}/basecalls/foo
-    dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} ${workpath_full} | gzip > ${projectpath_full}/basecalls/foo/foo.fastq.gz
+    dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} ${workpath_full}/pod5_pass/barcode09 | gzip > ${projectpath_full}/basecalls/foo/foo.fastq.gz
     """
 }
 process backUp {
