@@ -1,6 +1,6 @@
 process trimming {
     input:
-        path("fastq") from basecalled
+        path("fastq")
     output:
         path("*.trimmed_fastq"), emit: trimmed
     script:
