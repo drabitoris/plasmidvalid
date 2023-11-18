@@ -5,7 +5,7 @@ process basecall {
         path workpath_full
         path projectpath_full
     output:
-        path("foo.fastq.gz"), emit: basecalled
+        path("*.fastq.gz"), emit: basecalled
     script:
     """
     module load dorado
