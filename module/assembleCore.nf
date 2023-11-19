@@ -19,8 +19,6 @@ process downSampling {
         path trimmed_fastq
     output:
         path 'boo.downsampled.fastq.gz', emit: downsampled
-    when:
-        ${params.coverage} > 50
     script:
     """
     rasusa \
