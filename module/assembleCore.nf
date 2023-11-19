@@ -20,7 +20,7 @@ process downSampling {
     output:
         path 'boo.downsampled.fastq.gz', emit: downsampled
     when:
-        param.coverage > 50
+        ${param.coverage} > 50
     script:
     """
     rasusa \
