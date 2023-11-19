@@ -36,10 +36,10 @@ process assembling {
     script:
     """
     flye \
-        --${params.flye_quality} \
+        --${params.flye_quality} boo.downsampled.fastq.gz \
         --deterministic \
         --threads 8 \
-        --genome-size ${param.approx_size} \
+        --genome-size ${params.approx_size} \
         --out-dir "assm_${downsampled_fastq}" \
         --meta
     """
