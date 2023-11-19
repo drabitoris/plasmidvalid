@@ -18,11 +18,10 @@ process downSampling {
     input:
         path("trimmed_fastq")
     output:
-        path("*.downsampled.fastq.gz") into downsampled
+        path("*.downsampled.fastq.gz"), emit: downsampled
     when:
         param.coverage > 50
     script:
-        name = sample_id
     """
     rasusa \
         --coverage 180 \
@@ -33,9 +32,9 @@ process downSampling {
 process assembling {
     label "plasmid"
     input:
-        path path ("downsampled_fastq")
+        path ("downsampled_fastq")
     output:
-        path("assmed_fastq")
+        path("assmed_fastq"), emit: assembled
     script:
         name = sample_id
     """
@@ -44,7 +43,7 @@ process assembling {
         --deterministic \
         --threads 8 \
         --genome-size $approx_size \
-        --out-dir "assm_\${BOO_NAME}" \
+        --out-dir "assm_\${downsampled_fastq}" \
         --meta
     """
 }
