@@ -56,6 +56,10 @@
         "trim_min_q": {
             "type": "integer",
             "default": 7
+        },
+        "flye_quality": {
+            "type": "string",
+            "default": "nano-hq"
         }
     }
 }
