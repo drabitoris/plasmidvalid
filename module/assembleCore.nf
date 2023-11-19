@@ -36,13 +36,12 @@ process assembling {
     output:
         path("assmed_fastq"), emit: assembled
     script:
-        name = sample_id
     """
     flye \
         --${params.flye_quality} \
         --deterministic \
         --threads 8 \
-        --genome-size $approx_size \
+        --genome-size ${param.approx_size} \
         --out-dir "assm_\${downsampled_fastq}" \
         --meta
     """
