@@ -3,7 +3,7 @@ process trimming {
     input:
         path fastq
     output:
-        path'boo.trimmed.fastq.gz' emit: trimmed
+        path 'boo.trimmed.fastq.gz', emit: trimmed
     script:
     """
     porechop -i $fastq \
@@ -18,7 +18,7 @@ process downSampling {
     input:
         path trimmed_fastq
     output:
-        path'boo.downsampled.fastq.gz' emit: downsampled
+        path 'boo.downsampled.fastq.gz', emit: downsampled
     when:
         param.coverage > 50
     script:
@@ -34,7 +34,7 @@ process assembling {
     input:
         path downsampled_fastq
     output:
-        path'assm_\$downsampled_fastq', emit: assembled
+        path 'assm_\$downsampled_fastq', emit: assembled
     script:
     """
     flye \
