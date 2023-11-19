@@ -17,6 +17,10 @@
             "type": "string",
             "default": "None"
         },
+        "approx_size": {
+            "type": "integer",
+            "default": null
+        },
         "sample": {
             "type": "string",
             "default": "None"
