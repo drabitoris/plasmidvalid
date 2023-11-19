@@ -3,7 +3,7 @@ process trimming {
     input:
         path("fastq")
     output:
-        path("*.trimmed_fastq"), emit: trimmed
+        stdout emit: trimmed
     script:
     """
     porechop -i ${fastq} \
@@ -18,7 +18,7 @@ process downSampling {
     input:
         path("trimmed_fastq")
     output:
-        path("*.downsampled.fastq.gz"), emit: downsampled
+        stdout emit: downsampled
     when:
         param.coverage > 50
     script:
