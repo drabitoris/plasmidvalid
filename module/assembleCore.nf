@@ -24,7 +24,8 @@ process downSampling {
     rasusa \
         --coverage 180 \
         --genome-size ${params.approx_size} \
-        --input boo.trimmed.fastq.gz -g > boo.downsampled.fastq.gz
+        -O g \
+        --input boo.trimmed.fastq.gz > boo.downsampled.fastq.gz
     """
 }
 process assembling {
