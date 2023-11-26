@@ -2,7 +2,6 @@
 
 nextflow.enable.dsl = 2
 include { basecall } from "./module/basecall"
-include { backUp } from "./module/basecall"
 include { trimming } from "./module/assembleCore"
 include { downSampling } from "./module/assembleCore"
 include { assembling } from "./module/assembleCore"
