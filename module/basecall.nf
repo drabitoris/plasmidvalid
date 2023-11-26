@@ -4,7 +4,7 @@ process basecall {
     input:
         val samplesheet 
     output:
-        path("*.fastq.gz"), emit: basecalled
+        path("${samplesheet.barcode}.fastq.gz"), emit: basecalled
     script:
     """
     module load dorado
