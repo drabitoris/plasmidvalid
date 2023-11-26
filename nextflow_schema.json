@@ -17,9 +17,9 @@
             "type": "string",
             "default": "None"
         },
-        "approx_size": {
-            "type": "integer",
-            "default": null
+        "sample_sheet": {
+            "type": "string",
+            "default": "None"
         },
         "sample": {
             "type": "string",
