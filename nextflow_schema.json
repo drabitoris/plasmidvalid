@@ -49,10 +49,6 @@
             "type": "string",
             "default": "/vast/scratch/users/cmero.ma/nanopore"
         },
-        "approx_size": {
-            "type": "string",
-            "default": null
-        },
         "trim_length": {
             "type": "integer",
             "default": 150
