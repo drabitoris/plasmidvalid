@@ -2,15 +2,13 @@ process basecall {
     queue "${params.gpu_partition}"
     clusterOptions "--gres=gpu:${params.gpu_config} --mem=${params.gpu_mem} --time=0-03:00 --cpus-per-task 5"
     input:
-        path workpath_full
-        path projectpath_full
+        val samplesheet 
     output:
         path("*.fastq.gz"), emit: basecalled
     script:
     """
     module load dorado
-    mkdir -p ${projectpath_full}/basecalls/foo
-    dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} ${workpath_full} | gzip >> foo.fastq.gz
+    dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} ${params.work_dir}/${params.project}/${params.sample}/${params.run}/pod5_pass/${samplesheet.barcode} | gzip >> ${samplesheet.barcode}.fastq.gz
     """
 }
 process backUp {
