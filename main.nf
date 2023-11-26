@@ -21,9 +21,7 @@ workflow {
     projectpath_ch = Channel.fromPath("${params.work_dir}/${params.project}", checkIfExists: true)
 
     main:
-        bout =basecall(workpath_ch, projectpath_ch).basecalled
-        tout = trimming(bout).trimmed
-        dout = downSampling(tout).downsampled
-        result = assembling(dout).assembled
+        bout = basecall(csv_rows).basecalled
+        result = trimming(csv_rows).trimmed
         result.view { "Result: ${it}" }
 }
