@@ -1,16 +1,16 @@
 process trimming {
     label "plasmid"
     input:
-        path fastq
+        val samplesheet
     output:
-        path 'boo.trimmed.fastq.gz', emit: trimmed
+        path '${samplesheet.barcode}.trimmed.fastq.gz', emit: trimmed
     script:
     """
-    porechop -i $fastq \
+    porechop -i ${samplesheet.barcode}.fastq.gz \
         --format fastq.gz \
         --end_threshold  50 --extra_end_trim 50 \
         --discard_middle --middle_threshold 80 \
-        > boo.trimmed.fastq.gz
+        > ${samplesheet.barcode}.trimmed.fastq.gz
     """
 }
 process downSampling {
