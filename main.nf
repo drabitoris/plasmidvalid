@@ -16,6 +16,6 @@ workflow {
 
     main:
         bout = basecall(csv_rows).basecalled
-        result = trimming(csv_rows).trimmed
+        result = trimming(bout).trimmed
         result.view { "Result: ${it}" }
 }
