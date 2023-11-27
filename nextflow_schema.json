@@ -31,11 +31,11 @@
         },
         "gpu_config": {
             "type": "string",
-            "default": "A10:1"
+            "default": "A30:1"
         },
         "gpu_mem": {
             "type": "string",
-            "default": "10G"
+            "default": "4G"
         },
         "gpu_partition": {
             "type": "string",
