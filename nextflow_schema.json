@@ -39,7 +39,7 @@
         },
         "gpu_partition": {
             "type": "string",
-            "default": "gpuq_interactive"
+            "default": "gpuq"
         },
         "backup_dir": {
             "type": "string",
