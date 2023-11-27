@@ -4,7 +4,7 @@ process basecall {
     input:
         val row 
     output:
-        val (${row.barcode}), emit: basecalled
+        val row, emit: basecalled
     script:
     """
     module load dorado
