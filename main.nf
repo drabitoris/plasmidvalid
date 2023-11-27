@@ -16,5 +16,4 @@ workflow {
 
     main:
         result = basecall(csv_rows).basecalled
-        result.view { "Result: ${it}" }
 }
