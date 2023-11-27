@@ -15,5 +15,7 @@ workflow {
         .set { csv_rows }
 
     main:
-        result = basecall(csv_rows).basecalled
+        bout = basecall(csv_rows).basecalled
+        result = trimming(csv_rows).trimmed
+        result.view { "Result: ${it}" }
 }
