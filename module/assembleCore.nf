@@ -3,7 +3,7 @@ process trimming {
     input:
         val samplesheet
     output:
-        path '${samplesheet.barcode}.trimmed.fastq.gz', emit: trimmed
+        tuple val (${samplesheet.barcode}), path '${samplesheet.barcode}.trimmed.fastq.gz', emit: trimmed
     script:
     """
     porechop -i ${samplesheet.barcode}.fastq.gz \
