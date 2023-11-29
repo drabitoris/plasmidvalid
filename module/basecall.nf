@@ -4,12 +4,13 @@ process basecall {
     input:
         val row 
     output:
-        val (row), path ('${row.barcode}.fastq.gz'), emit: basecalled
+        val (bar), path ('${row.barcode}.fastq.gz'), emit: basecalled
     script:
     """
+    bar = ${row.barcode}
     module load dorado
     dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} \
-        ${params.work_dir}/${params.project}/_transfer/${params.sample}/${params.run}/pod5_pass/${row.barcode} \
-        | gzip >> ${row.barcode}.fastq.gz
+        ${params.work_dir}/${params.project}/_transfer/${params.sample}/${params.run}/pod5_pass/$bar \
+        | gzip >> $bar.fastq.gz
     """
 }
