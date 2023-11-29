@@ -1,7 +1,7 @@
 process trimming {
     label "plasmid"
     input:
-        val row, path fastq
+        tuple val bar, path fastq
     output:
         path '${row.barcode}.trimmed.fastq.gz', emit: trimmed
     script:
@@ -10,7 +10,7 @@ process trimming {
         --format fastq.gz \
         --end_threshold  50 --extra_end_trim 50 \
         --discard_middle --middle_threshold 80 \
-        > ${row.barcode}.trimmed.fastq.gz
+        > $bar.trimmed.fastq.gz
     """
 }
 process downSampling {
