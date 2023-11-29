@@ -1,8 +1,7 @@
 process trimming {
     label "plasmid"
     input:
-        tuple val row,
-            path fastq
+        val row, path fastq
     output:
         path '${row.barcode}.trimmed.fastq.gz', emit: trimmed
     script:
