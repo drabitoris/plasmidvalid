@@ -1,9 +1,9 @@
 process trimming {
     label "plasmid"
     input:
-        tuple val(bar), path(fastq)
+        tuple val(bar), path('fastq')
     output:
-        path '*.trimmed.fastq.gz', emit: trimmed
+        path "*.trimmed.fastq.gz", emit: trimmed
     script:
     """
     porechop -i $fastq \
