@@ -6,7 +6,7 @@ process basecall {
     output:
         tuple val (bar), path ('${row.barcode}.fastq.gz'), emit: basecalled
     script:
-    bar = ${row.barcode}
+    bar = row.barcode
     """ 
     module load dorado
     dorado basecaller --emit-fastq \$DORADO_MODELS/${params.basecall_model} \
