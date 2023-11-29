@@ -4,7 +4,7 @@ process basecall {
     input:
         val row 
     output:
-        val row, path ${row.barcode}.fastq.gz, emit: basecalled
+        val (row), path ('${row.barcode}.fastq.gz'), emit: basecalled
     script:
     """
     module load dorado
