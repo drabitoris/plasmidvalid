@@ -1,7 +1,8 @@
 process trimming {
     label "plasmid"
     input:
-        tuple val(bar), path('fastq')
+        val bar
+        path fastq
     output:
         path "*.trimmed.fastq.gz", emit: trimmed
     script:
