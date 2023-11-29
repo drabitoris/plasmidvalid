@@ -1,12 +1,13 @@
 process trimming {
     label "plasmid"
     input:
-        val row
+        tuple val row,
+            path fastq
     output:
         path '${row.barcode}.trimmed.fastq.gz', emit: trimmed
     script:
     """
-    porechop -i ${row.barcode}.fastq.gz \
+    porechop -i $fastq \
         --format fastq.gz \
         --end_threshold  50 --extra_end_trim 50 \
         --discard_middle --middle_threshold 80 \
