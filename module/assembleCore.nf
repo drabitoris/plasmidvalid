@@ -1,17 +1,16 @@
 process trimming {
     label "plasmid"
     input:
-        tuple val (bar),
-            path ('${bar}.fastq.gz')
+        path basecalled.fastq.gz
     output:
-        path ('${bar}.trimmed.fastq.gz'), emit: trimmed
+        path('trimmed.fastq.gz'), emit: trimmed
     script:
     """
-    porechop -i ${bar}.fastq.gz \
+    porechop -i basecalled.fastq.gz \
         --format fastq.gz \
         --end_threshold  50 --extra_end_trim 50 \
         --discard_middle --middle_threshold 80 \
-        > ${bar}.trimmed.fastq.gz
+        > trimmed.fastq.gz
     """
 }
 process downSampling {
