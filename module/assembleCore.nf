@@ -1,9 +1,9 @@
 process trimming {
     label "plasmid"
     input:
-        path basecalled
+        tuple var(row),path('basecalled')
     output:
-        path('trimmed.fastq.gz'), emit: trimmed
+        tuple var(row),path('trimmed.fastq.gz'), emit: trimmed
     script:
     """
     porechop -i $basecalled \
@@ -16,10 +16,9 @@ process trimming {
 process downSampling {
     label "plasmid"
     input:
-    var row
-    path trimmed
+        tuple var(row),path('trimmed')
     output:
-        path('downsampled.fastq.gz'), emit: downSampled
+        tuple var(row),path('downsampled.fastq.gz'), emit: downSampled
     script:
     """
     rasusa \
@@ -32,10 +31,9 @@ process downSampling {
 process assembling {
     label "plasmid"
     input:
-    var row
-    path downsampled
+        tuple var(row),path('downsampled')
     output:
-        path('assembled.fastq.gz'), emit: assembled
+        tuple var(row),path('assembled.fastq.gz'), emit: assembled
     script:
     """
     flye \
@@ -45,5 +43,23 @@ process assembling {
         --genome-size ${row.approx_size} \
         --out-dir . \
         --meta
+    """
+}
+process medakaPolishAssembly {
+    label "medaka"
+    cpus 4
+    input:
+        tuple val(sample_id), path(draft), path(fastq), val(medaka_model)
+    output:
+        tuple val(sample_id), path("*.final.fasta"), emit: polished
+        tuple val(sample_id), path("${sample_id}.final.fastq"), emit: assembly_qc
+    script:
+        def model = medaka_model
+    
+    """
+    medaka_consensus -i "${fastq}" -d "${draft}" -m "${model}" -o . -t 4 -f -q
+    echo ">${sample_id}" >> "${sample_id}.final.fasta"
+    sed "2q;d" consensus.fasta >> "${sample_id}.final.fasta"
+    mv consensus.fasta "${sample_id}.final.fastq"
     """
 }
