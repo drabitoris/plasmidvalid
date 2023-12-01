@@ -16,8 +16,8 @@ process trimming {
 process downSampling {
     label "plasmid"
     input:
-        var row
-        path trimmed
+    var row
+    path trimmed
     output:
         path('downsampled.fastq.gz'), emit: downSampled
     script:
@@ -32,8 +32,8 @@ process downSampling {
 process assembling {
     label "plasmid"
     input:
-        var row
-        path downsampled
+    var row
+    path downsampled
     output:
         path('assembled.fastq.gz'), emit: assembled
     script:
