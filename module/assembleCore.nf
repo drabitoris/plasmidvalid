@@ -18,7 +18,7 @@ process downSampling {
     input:
         tuple var(row),path('trimmed')
     output:
-        tuple var(row),path('downsampled.fastq.gz'), emit: downsampled
+        tuple var(row),path('downsampled.fastq.gz'), emit: downSampled
     script:
     """
     rasusa \
