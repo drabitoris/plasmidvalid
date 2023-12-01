@@ -1,7 +1,6 @@
 process trimming {
     label "plasmid"
     input:
-        var row
         path basecalled
     output:
         path('trimmed.fastq.gz'), emit: trimmed
