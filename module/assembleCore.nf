@@ -47,21 +47,3 @@ process assembling {
         --meta
     """
 }
-process medakaPolishAssembly {
-    label "medaka"
-    cpus 4
-    input:
-        tuple val(sample_id), path(draft), path(fastq), val(medaka_model)
-    output:
-        tuple val(sample_id), path("*.final.fasta"), emit: polished
-        tuple val(sample_id), path("${sample_id}.final.fastq"), emit: assembly_qc
-    script:
-        def model = medaka_model
-    
-    """
-    medaka_consensus -i "${fastq}" -d "${draft}" -m "${model}" -o . -t 4 -f -q
-    echo ">${sample_id}" >> "${sample_id}.final.fasta"
-    sed "2q;d" consensus.fasta >> "${sample_id}.final.fasta"
-    mv consensus.fasta "${sample_id}.final.fastq"
-    """
-}
