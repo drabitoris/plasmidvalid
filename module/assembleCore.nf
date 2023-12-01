@@ -1,9 +1,9 @@
 process trimming {
     label "plasmid"
     input:
-        tuple var(bar),path('basecalled')
+        tuple var(row),path('basecalled')
     output:
-        path('trimmed.fastq.gz'), emit: trimmed
+        tuple var(row),path('trimmed.fastq.gz'), emit: trimmed
     script:
     """
     porechop -i $basecalled \
@@ -16,32 +16,50 @@ process trimming {
 process downSampling {
     label "plasmid"
     input:
-        path trimmed_fastq
+        tuple var(row),path('trimmed')
     output:
-        path 'boo.downsampled.fastq.gz', emit: downsampled
+        tuple var(row),path('downsampled.fastq.gz'), emit: downsampled
     script:
     """
     rasusa \
         --coverage 180 \
-        --genome-size ${params.approx_size} \
+        --genome-size ${row.approx_size} \
         -O g \
-        --input boo.trimmed.fastq.gz > boo.downsampled.fastq.gz
+        --input $trimmed > downsampled.fastq.gz
     """
 }
 process assembling {
     label "plasmid"
     input:
-        path downsampled_fastq
+        tuple var(row),path('downsampled')
     output:
-        path 'assm_\$downsampled_fastq', emit: assembled
+        tuple var(row),path('assembled.fastq.gz'), emit: assembled
     script:
     """
     flye \
-        --${params.flye_quality} boo.downsampled.fastq.gz \
+        --${params.flye_quality} $downsampled \
         --deterministic \
         --threads 8 \
-        --genome-size ${params.approx_size} \
-        --out-dir "assm_${downsampled_fastq}" \
+        --genome-size ${row.approx_size} \
+        --out-dir . \
         --meta
+    """
+}
+process medakaPolishAssembly {
+    label "medaka"
+    cpus 4
+    input:
+        tuple val(sample_id), path(draft), path(fastq), val(medaka_model)
+    output:
+        tuple val(sample_id), path("*.final.fasta"), emit: polished
+        tuple val(sample_id), path("${sample_id}.final.fastq"), emit: assembly_qc
+    script:
+        def model = medaka_model
+    
+    """
+    medaka_consensus -i "${fastq}" -d "${draft}" -m "${model}" -o . -t 4 -f -q
+    echo ">${sample_id}" >> "${sample_id}.final.fasta"
+    sed "2q;d" consensus.fasta >> "${sample_id}.final.fasta"
+    mv consensus.fasta "${sample_id}.final.fastq"
     """
 }
