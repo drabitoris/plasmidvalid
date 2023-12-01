@@ -14,9 +14,10 @@ workflow {
     Channel.
         fromPath("${params.sample_sheet}")
         .splitCsv(header: true, sep: ',', strip: true)
-        .set { csv_rows } | 
-    basecall |
-    trimming |
-    downSampling |
-    assembling.trimmed
+        .set { csv_rows }
+    main:
+        basecall(csv_rows) |
+            trimming |
+            downSampling |
+            assembling
 }
