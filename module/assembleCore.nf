@@ -1,9 +1,10 @@
 process trimming {
     label "plasmid"
     input:
-        tuple var(row), path('basecalled')
+        var(row)
+        path('basecalled')
     output:
-        tuple var(row), path('trimmed.fastq.gz'), emit: trimmed
+        path('trimmed.fastq.gz'), emit: trimmed
     script:
     """
     porechop -i $basecalled \
@@ -16,9 +17,10 @@ process trimming {
 process downSampling {
     label "plasmid"
     input:
-        tuple var(row), path('trimmed')
+        var(row)
+        path('trimmed')
     output:
-        tuple var(row), path('downsampled.fastq.gz'), emit: downSampled
+        path('downsampled.fastq.gz'), emit: downSampled
     script:
     """
     rasusa \
@@ -31,9 +33,10 @@ process downSampling {
 process assembling {
     label "plasmid"
     input:
-        tuple var(row), path('downsampled')
+        var(row)
+        path('downsampled')
     output:
-        tuple var(row), path('assembled.fastq.gz'), emit: assembled
+        path('assembled.fastq.gz'), emit: assembled
     script:
     """
     flye \
