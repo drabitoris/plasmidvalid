@@ -18,6 +18,6 @@ workflow {
     main:
         bout = basecall(csv_rows).basecalled 
         tout = trimming(bout).trimmed 
-        dout = downSampling(csv_rows, tout).downSampled 
-        aout = assembling(csv_rows, dout)
+        dout = downSampling(tout).downSampled 
+        aout = assembling(dout)
 }
