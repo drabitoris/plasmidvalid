@@ -11,13 +11,12 @@ def processCsvRow(row) {
 }
 
 workflow {
-    result = Channel.
-            fromPath("${params.sample_sheet}")
-            .splitCsv(header: true, sep: ',', strip: true)
-            .set { csv_rows } | 
-        basecall |
-        trimming |
-        downSampling |
-        assembling.trimmed
-    result.view { "Result: ${it}" }
+    Channel.
+        fromPath("${params.sample_sheet}")
+        .splitCsv(header: true, sep: ',', strip: true)
+        .set { csv_rows } | 
+    basecall |
+    trimming |
+    downSampling |
+    assembling.trimmed
 }
