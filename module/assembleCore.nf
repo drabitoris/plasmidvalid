@@ -4,7 +4,7 @@ process trimming {
     input:
         tuple val(meta), path('basecalled')
     output:
-        tuple var(meta), path('trimmed.fastq.gz')
+        tuple val(meta), path('trimmed.fastq.gz')
 
     script:
     """
@@ -19,9 +19,9 @@ process trimming {
 process downSampling {
     label "plasmid"
     input:
-        tuple var(meta), path('trimmed')
+        tuple val(meta), path('trimmed')
     output:
-        tuple var(meta), path('downsampled.fastq.gz')
+        tuple val(meta), path('downsampled.fastq.gz')
 
     script:
     """
@@ -36,9 +36,9 @@ process downSampling {
 process assembling {
     label "plasmid"
     input:
-        tuple var(meta), path('downsampled')
+        tuple val(meta), path('downsampled')
     output:
-        tuple var(meta), path('assembled.fastq.gz')
+        tuple val(meta), path('assembled.fastq.gz')
 
     script:
     """
