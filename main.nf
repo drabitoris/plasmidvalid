@@ -15,5 +15,6 @@ workflow {
         fromPath("${params.sample_sheet}")
         .splitCsv(header: true, sep: ',', strip: true)
         .map { row -> processCsvRow(row) }
-        .view()
+        .set(csvrow)
+    csvrow.view()
 }
