@@ -16,5 +16,5 @@ workflow {
         .splitCsv(header: true, sep: ',', strip: true)
         .map { row -> processCsvRow(row) }
         .set { csvrow }
-    csvrow.view()
+    csvrow.barcode.view()
 }
