@@ -4,7 +4,7 @@ process basecall {
     input:
         val row 
     output:
-        tuple val(row), path('basecalled.fastq.gz'), emit: basecalled
+        tuple val(row), path('basecalled.fastq.gz')
     script:
     bar = row.barcode
     """ 
