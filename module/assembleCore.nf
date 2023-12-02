@@ -1,9 +1,9 @@
 process trimming {
     label "plasmid"
     input:
-        tuple var(row), path('basecalled')
+        tuple val(meta), path('basecalled')
     output:
-        tuple var(row), path('trimmed.fastq.gz')
+        tuple var(meta), path('trimmed.fastq.gz')
     script:
     """
     porechop -i $basecalled \
@@ -16,14 +16,14 @@ process trimming {
 process downSampling {
     label "plasmid"
     input:
-        tuple var(row), path('trimmed')
+        tuple var(meta), path('trimmed')
     output:
-        tuple var(row), path('downsampled.fastq.gz')
+        tuple var(meta), path('downsampled.fastq.gz')
     script:
     """
     rasusa \
         --coverage 180 \
-        --genome-size ${row.approx_size} \
+        --genome-size ${meta.approx_size} \
         -O g \
         --input $trimmed > downsampled.fastq.gz
     """
@@ -31,16 +31,16 @@ process downSampling {
 process assembling {
     label "plasmid"
     input:
-        tuple var(row), path('downsampled')
+        tuple var(meta), path('downsampled')
     output:
-        tuple var(row), path('assembled.fastq.gz')
+        tuple var(meta), path('assembled.fastq.gz')
     script:
     """
     flye \
         --${params.flye_quality} $downsampled \
         --deterministic \
         --threads 8 \
-        --genome-size ${row.approx_size} \
+        --genome-size ${meta.approx_size} \
         --out-dir . \
         --meta
     """
