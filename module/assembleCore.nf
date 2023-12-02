@@ -1,4 +1,5 @@
 process trimming {
+    debug true
     label "plasmid"
     input:
         tuple val(meta), path('basecalled')
