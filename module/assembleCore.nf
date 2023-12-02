@@ -5,6 +5,7 @@ process trimming {
         tuple val(meta), path('basecalled')
     output:
         tuple var(meta), path('trimmed.fastq.gz')
+
     script:
     """
     porechop -i $basecalled \
@@ -21,6 +22,7 @@ process downSampling {
         tuple var(meta), path('trimmed')
     output:
         tuple var(meta), path('downsampled.fastq.gz')
+
     script:
     """
     rasusa \
@@ -37,6 +39,7 @@ process assembling {
         tuple var(meta), path('downsampled')
     output:
         tuple var(meta), path('assembled.fastq.gz')
+
     script:
     """
     flye \
