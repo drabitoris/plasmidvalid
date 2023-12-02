@@ -14,6 +14,7 @@ process trimming {
         > trimmed.fastq.gz
     """
 }
+
 process downSampling {
     label "plasmid"
     input:
@@ -29,6 +30,7 @@ process downSampling {
         --input $trimmed > downsampled.fastq.gz
     """
 }
+
 process assembling {
     label "plasmid"
     input:
