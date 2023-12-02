@@ -16,8 +16,5 @@ workflow {
         .splitCsv(header: true, sep: ',', strip: true)
         .set { csv_rows }
     main:
-        bout = basecall(csv_rows).basecalled 
-        tout = trimming(bout).trimmed 
-        dout = downSampling(tout).downSampled 
-        aout = assembling(dout).assembled
+        basecall(csv_rows) | trimming | downSampling | assembling
 }
