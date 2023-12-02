@@ -17,5 +17,5 @@ workflow {
         .map { row -> processCsvRow(row) }
         .set { csv_rows }
     main:
-        basecall(csv_rows) | trimming | downSampling | assembling
+        basecall(csv_rows)
 }
