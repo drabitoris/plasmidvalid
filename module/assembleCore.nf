@@ -43,7 +43,7 @@ process assembling {
     script:
     """
     flye \
-        --${params.flye_quality} $downsampled.fastq.gz \
+        --${params.flye_quality} $downsampled\.fastq\.gz \
         --deterministic \
         --threads 8 \
         --genome-size ${meta.approx_size} \
