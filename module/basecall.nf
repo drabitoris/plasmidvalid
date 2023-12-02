@@ -2,7 +2,7 @@ process basecall {
     queue "${params.gpu_partition}"
     clusterOptions "--gres=gpu:${params.gpu_config} --mem=${params.gpu_mem} --time=0-03:00 --cpus-per-task 1"
     input:
-        val (meta)
+        val(meta)
     output:
         tuple val(meta), path('basecalled.fastq.gz')
     script:
