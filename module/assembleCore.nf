@@ -36,14 +36,14 @@ process downSampling {
 process assembling {
     label "plasmid"
     input:
-        tuple val(meta), path('downsampled')
+        tuple val(meta), path('downsampled.fastq.gz')
     output:
         tuple val(meta), path('assembled.fastq.gz')
 
     script:
     """
     flye \
-        --${params.flye_quality} $downsampled \
+        --${params.flye_quality} $downsampled.fastq.gz \
         --deterministic \
         --threads 8 \
         --genome-size ${meta.approx_size} \
