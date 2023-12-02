@@ -15,5 +15,5 @@ workflow {
         fromPath("${params.sample_sheet}")
         .splitCsv(header: true, sep: ',', strip: true)
         .set { csvrow }
-    basecall(csvrows) | trimming | downSampling | assembling
+    basecall(csvrow) | trimming | downSampling | assembling
 }
