@@ -14,7 +14,6 @@ workflow {
     Channel.
         fromPath("${params.sample_sheet}")
         .splitCsv(header: true, sep: ',', strip: true)
-        .map { row -> processCsvRow(row) }
         .set { csvrow }
     csvrow.barcode.view()
 }
