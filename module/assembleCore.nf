@@ -51,3 +51,20 @@ process assembling {
         --meta > assembled.fastq
     """
 }
+
+process medakaPolish {
+    label "medaka"
+    cpus params.threads
+    input:
+        tuple val(meta), path(flyedraft), path(basecallfastq)
+    output:
+        tuple val(sample_id), path("*.final.fasta"), emit: polished
+    script:
+    
+    """
+    medaka_consensus -i "${basecallfastq}" -d "${flyedraft}" -m "${params.model}" -o . -t $task.cpus -f -q
+    echo ">${meta.barcode}" >> "${meta.barcode}.final.fasta"
+    sed "2q;d" consensus.fasta >> "${meta.barcode}.final.fasta"
+    mv consensus.fasta "${meta.barcode}.final.fastq"
+    """
+}
