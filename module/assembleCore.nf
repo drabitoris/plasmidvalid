@@ -2,13 +2,13 @@ process trimming {
     debug true
     label "plasmid"
     input:
-        tuple val(meta), path('basecalled')
+        tuple val(meta), path('basecalled.fastq')
     output:
         tuple val(meta), path('trimmed.fastq.gz')
 
     script:
     """
-    porechop -i $basecalled \
+    porechop -i basecalled.fastq \
         --format fastq.gz \
         --end_threshold  50 --extra_end_trim 50 \
         --discard_middle --middle_threshold 80 \
