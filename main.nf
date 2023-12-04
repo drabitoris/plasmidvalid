@@ -15,5 +15,9 @@ workflow {
         fromPath("${params.sample_sheet}")
         .splitCsv(header: true, sep: ',', strip: true)
         .set { csvrow }
-    basecall(csvrow) | trimming | downSampling | assembling
+    bout = basecall(csvrow) 
+    tout = trimming(bout)
+    dout = downSampling(tout)
+    aout = assembling(dout)
+    mout = medakaPolish(dout, bout)
 }
