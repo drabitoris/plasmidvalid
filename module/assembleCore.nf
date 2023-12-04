@@ -63,7 +63,7 @@ process medakaPolish {
     script:
     
     """
-    medaka_consensus -i "${basecallfastq}" -d "${flyedraft}" -m "${params.model}" -o . -t $task.cpus -f -q
+    medaka_consensus -i "basecallfastq" -d "flyedraft" -m "${params.model}" -o . -t $task.cpus -f -q
     echo ">${meta.barcode}" >> "${meta.barcode}.final.fasta"
     sed "2q;d" consensus.fasta >> "${meta.barcode}.final.fasta"
     mv consensus.fasta "${meta.barcode}.final.fastq"
