@@ -5,6 +5,7 @@ include { basecall } from "./module/basecall"
 include { trimming } from "./module/assembleCore"
 include { downSampling } from "./module/assembleCore"
 include { assembling } from "./module/assembleCore"
+include { medakaPolish } from "./module/assembleCore"
 
 def processCsvRow(row) {
     Channel.of(row)
