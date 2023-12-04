@@ -9,7 +9,7 @@ process basecall {
     bar = meta.barcode
     """ 
     module load dorado
-    dorado basecaller --emit-fastq \$DORADO_MODELS/${params.model} \
+    dorado basecaller --emit-fastq \$DORADO_MODELS/${params.dorado_model} \
         ${params.work_dir}/${params.project}/_transfer/${params.sample}/${params.run}/pod5_pass/${bar} \
         | gzip >> basecalled.fastq.gz
     """
