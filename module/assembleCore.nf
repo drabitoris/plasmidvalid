@@ -59,7 +59,7 @@ process medakaPolish {
         tuple val(meta), path('basecallfastq.fastq')
         path('flyedraft.fasta')
     output:
-        tuple val(meta), path('*.final.fasta'), emit: polished
+        tuple val(meta), path('*.final.fasta')
     script:
     
     """
@@ -67,5 +67,18 @@ process medakaPolish {
     echo ">${meta.barcode}" >> ${meta.barcode}.final.fasta
     sed "2q;d" consensus.fasta >> ${meta.barcode}.final.fasta
     mv consensus.fasta ${meta.barcode}.final.fastq
+    """
+}
+
+process dupscoopCorrection {
+    label "plasmid"
+    input:
+        tuple val(meta), path('reference.fasta')
+    output:
+        tuple val(meta), path('*.corrected.fasta')
+    script:
+
+    """
+    dupscoop --ref reference.fasta --min 500 -s 0.7 -o ${meta.barcode}.corrected.fasta -d 20
     """
 }
