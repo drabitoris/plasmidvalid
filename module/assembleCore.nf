@@ -56,14 +56,14 @@ process medakaPolish {
     label "medaka"
     cpus 4
     input:
-        tuple val(meta), path('basecallfastq')
-        path('flyedraft')
+        tuple val(meta), path('basecallfastq.fastq')
+        path('flyedraft.fasta')
     output:
         tuple val(meta), path('*.final.fasta'), emit: polished
     script:
     
     """
-    medaka_consensus -i basecallfastq -d flyedraft -m ${params.medaka_model} -o . -t $task.cpus -f -q
+    medaka_consensus -i basecallfastq.fastq -d flyedraft.fasta -m ${params.medaka_model} -o . -t $task.cpus -f -q
     echo ">${meta.barcode}" >> ${meta.barcode}.final.fasta
     sed "2q;d" consensus.fasta >> ${meta.barcode}.final.fasta
     mv consensus.fasta ${meta.barcode}.final.fastq
