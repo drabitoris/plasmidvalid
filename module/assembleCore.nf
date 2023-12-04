@@ -54,7 +54,7 @@ process assembling {
 
 process medakaPolish {
     label "medaka"
-    cpus params.threads
+    cpus 4
     input:
         tuple val(meta), path(flyedraft)
         path(basecallfastq)
