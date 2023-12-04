@@ -4,13 +4,13 @@ process basecall {
     input:
         val(meta)
     output:
-        tuple val(meta), path('basecalled.fastq.gz')
+        tuple val(meta), path('basecalled.fastq')
     script:
     bar = meta.barcode
     """ 
     module load dorado
     dorado basecaller --emit-fastq \$DORADO_MODELS/${params.dorado_model} \
         ${params.work_dir}/${params.project}/_transfer/${params.sample}/${params.run}/pod5_pass/${bar} \
-        | gzip >> basecalled.fastq.gz
+        >> basecalled.fastq
     """
 }
