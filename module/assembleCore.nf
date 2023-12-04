@@ -54,7 +54,8 @@ process assembling {
 
 process medakaPolish {
     label "medaka"
-    cpus 4
+    queue "${params.gpu_partition}"
+    clusterOptions "--gres=gpu:${params.gpu_config} --mem=${params.gpu_mem} --time=0-03:00 --cpus-per-task 1"
     input:
         tuple val(meta), path('basecallfastq.fastq')
         path('flyedraft.fasta')
@@ -63,7 +64,7 @@ process medakaPolish {
     script:
     
     """
-    medaka_consensus -i basecallfastq.fastq -d flyedraft.fasta -m ${params.medaka_model} -o . -t $task.cpus -f -q
+    medaka_consensus -i basecallfastq.fastq -d flyedraft.fasta -m ${params.medaka_model} -o . --batch 40 -t 8 -f -q
     echo ">${meta.barcode}" >> ${meta.barcode}.final.fasta
     sed "2q;d" consensus.fasta >> ${meta.barcode}.final.fasta
     mv consensus.fasta ${meta.barcode}.final.fastq
