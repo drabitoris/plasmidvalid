@@ -56,9 +56,10 @@ process medakaPolish {
     label "medaka"
     cpus params.threads
     input:
-        tuple val(meta), path(flyedraft), path(basecallfastq)
+        tuple val(meta), path(flyedraft)
+        path(basecallfastq)
     output:
-        tuple val(sample_id), path("*.final.fasta"), emit: polished
+        tuple val(meta), path("*.final.fasta"), emit: polished
     script:
     
     """
