@@ -38,7 +38,7 @@ process assembling {
     input:
         tuple val(meta), path('downsampled.fastq.gz')
     output:
-        tuple val(meta), path('assembled.fasta')
+        path('assembled.fasta')
 
     script:
     """
@@ -56,8 +56,8 @@ process medakaPolish {
     label "medaka"
     cpus 4
     input:
-        tuple val(meta), path(flyedraft)
-        path(basecallfastq)
+        tuple val(meta), path(basecallfastq)
+        path(flyedraft)
     output:
         tuple val(meta), path("*.final.fasta"), emit: polished
     script:
