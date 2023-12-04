@@ -59,13 +59,13 @@ process medakaPolish {
         tuple val(meta), path('basecallfastq')
         path('flyedraft')
     output:
-        tuple val(meta), path("*.final.fasta"), emit: polished
+        tuple val(meta), path('*.final.fasta'), emit: polished
     script:
     
     """
-    medaka_consensus -i "basecallfastq" -d "flyedraft" -m "${params.model}" -o . -t $task.cpus -f -q
-    echo ">${meta.barcode}" >> "${meta.barcode}.final.fasta"
-    sed "2q;d" consensus.fasta >> "${meta.barcode}.final.fasta"
-    mv consensus.fasta "${meta.barcode}.final.fastq"
+    medaka_consensus -i basecallfastq -d flyedraft -m ${params.model} -o . -t $task.cpus -f -q
+    echo ">${meta.barcode}" >> ${meta.barcode}.final.fasta
+    sed "2q;d" consensus.fasta >> ${meta.barcode}.final.fasta
+    mv consensus.fasta ${meta.barcode}.final.fastq
     """
 }
