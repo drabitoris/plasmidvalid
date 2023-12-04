@@ -38,7 +38,7 @@ process assembling {
     input:
         tuple val(meta), path('downsampled.fastq.gz')
     output:
-        path('assembled.fasta')
+        path('assembly.fasta')
 
     script:
     """
@@ -48,7 +48,7 @@ process assembling {
         --threads 8 \
         --genome-size ${meta.approx_size} \
         --out-dir . \
-        --meta > assembled.fasta
+        --meta > assembly.fasta
     """
 }
 
