@@ -20,5 +20,5 @@ workflow {
     tout = trimming(bout)
     dout = downSampling(tout)
     aout = assembling(dout)
-    mout = medakaPolish(dout, bout)
+    mout = medakaPolish(bout, aout)
 }
