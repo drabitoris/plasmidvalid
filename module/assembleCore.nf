@@ -70,7 +70,20 @@ process medakaPolish {
     """
 }
 
-process dupscoopCorrection {
+process correcting {
+    label "plasmid"
+    input:
+        tuple val(meta), path('reference.fasta')
+    output:
+        tuple val(meta), path('*.corrected.fasta')
+    script:
+
+    """
+    dupscoop --ref reference.fasta --min 500 -s 0.7 -o ${meta.barcode}.corrected.fasta -d 20
+    """
+}
+
+process annotating {
     label "plasmid"
     input:
         tuple val(meta), path('reference.fasta')
