@@ -65,6 +65,13 @@
             "type": "integer",
             "default": 7
         },
+        "db_directory": {
+            "type": "string",
+            "title": "Database directory",
+            "format": "directory-path",
+            "description": "Optional directory containing a gene annotation database.",
+            "help_text": "A default generic annotation is provided in tar.gz format, containing entries from [fpbase](https://www.fpbase.org/), [Swiss-Prot](https://www.expasy.org/resources/uniprotkb-swiss-prot) , [Rfam](https://rfam.org/) and [snapgene](https://www.snapgene.com/)"
+        },
         "flye_quality": {
             "type": "string",
             "default": "nano-hq"

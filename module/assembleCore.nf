@@ -59,21 +59,21 @@ process medakaPolish {
         tuple val(meta), path('basecallfastq.fastq')
         path('flyedraft.fasta')
     output:
-        tuple val(meta), path('*.final.fasta')
+        tuple val(meta), path('*.polished.fasta')
     script:
     
     """
     medaka_consensus -i basecallfastq.fastq -d flyedraft.fasta -m ${params.medaka_model} -o . -t 8 -f -q
-    echo ">${meta.barcode}" >> ${meta.barcode}.final.fasta
-    sed "2q;d" consensus.fasta >> ${meta.barcode}.final.fasta
-    mv consensus.fasta ${meta.barcode}.final.fastq
+    echo ">${meta.barcode}" >> ${meta.barcode}.polished.fasta
+    sed "2q;d" consensus.fasta >> ${meta.barcode}.polished.fasta
+    mv consensus.fasta ${meta.barcode}.polished.fastq
     """
 }
 
 process correcting {
     label "plasmid"
     input:
-        tuple val(meta), path('reference.fasta')
+        tuple val(meta), path('polished.fasta')
     output:
         tuple val(meta), path('*.corrected.fasta')
     script:
@@ -86,12 +86,60 @@ process correcting {
 process annotating {
     label "plasmid"
     input:
-        tuple val(meta), path('reference.fasta')
+        tuple val(meta), path('corrected.fasta')
+        path annotation_database
     output:
-        tuple val(meta), path('*.corrected.fasta')
+        path "feature_table.txt", emit: feature_table
+        path "plannotate.json", emit: json
+        path "*annotations.bed", optional: true, emit: annotations
+        path "plannotate_report.json", emit: report
+        path "*annotations.gbk", optional: true, emit: gbk
     script:
-
+        def database =  annotation_database.name.startsWith('OPTIONAL_FILE') ? "Default" : "${annotation_database}"
     """
-    dupscoop --ref reference.fasta --min 500 -s 0.7 -o ${meta.barcode}.corrected.fasta -d 20
+    workflow-glue run_plannotate --sequences corrected.fasta --database $database
+    """
+}
+
+process report {
+    label "plasmid"
+    cpus 1
+    memory "2GB"
+    input:
+        path "downsampled_stats/*"
+        path final_status
+        path "per_barcode_stats/*"
+        path "host_filter_stats/*"
+        path "versions/*"
+        path "params.json"
+        path plannotate_json
+        path inserts_json
+        path lengths
+        path "qc_inserts/*"
+        path "assembly_quality/*"
+        path "mafs/*"
+    output:
+        path "wf-clone-validation-*.html", emit: html
+        path "sample_status.txt", emit: sample_stat
+        path "inserts/*", optional: true, emit: inserts
+    script:
+        report_name = "wf-clone-validation-report.html"
+    """
+    workflow-glue report \
+     $report_name \
+    --downsampled_stats downsampled_stats/* \
+    --revision $workflow.revision \
+    --commit $workflow.commitId \
+    --status $final_status \
+    --per_barcode_stats per_barcode_stats/* \
+    --host_filter_stats host_filter_stats/* \
+    --params params.json \
+    --versions versions \
+    --plannotate_json $plannotate_json \
+    --lengths $lengths \
+    --inserts_json $inserts_json \
+    --qc_inserts qc_inserts \
+    --assembly_quality assembly_quality/* \
+    --mafs mafs
     """
 }
