@@ -49,6 +49,38 @@ def get_sample_sheet(Path sample_sheet, ArrayList required_sample_types) {
         header: true, quote: '"'
     )
 }
+process fastcat {
+    label "ingress"
+    label "wf_common"
+    cpus 3
+    memory "2 GB"
+    input:
+        tuple val(meta), path("input")
+        val extra_args
+    output:
+        tuple val(meta),
+              path("seqs.fastq.gz"),
+              path("fastcat_stats")
+    script:
+        String out = "seqs.fastq.gz"
+        String fastcat_stats_outdir = "fastcat_stats"
+        """
+        mkdir $fastcat_stats_outdir
+        fastcat \
+            -s ${meta["alias"]} \
+            -r >(bgzip -c > $fastcat_stats_outdir/per-read-stats.tsv.gz) \
+            -f $fastcat_stats_outdir/per-file-stats.tsv \
+            --histograms histograms \
+            $extra_args \
+            input \
+            | bgzip > $out
+
+        mv histograms/* $fastcat_stats_outdir
+        # extract the run IDs from the per-read stats
+        csvtk cut -tf runid $fastcat_stats_outdir/per-read-stats.tsv.gz \
+        | csvtk del-header | sort | uniq > $fastcat_stats_outdir/run_ids
+        """
+}
 
 process getParams {
     label "wfplasmid"

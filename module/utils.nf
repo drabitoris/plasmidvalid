@@ -1,5 +1,5 @@
 process getParams {
-    label "wfplasmid"
+    label "plasmid"
     cpus 1
     memory "2GB"
     output:
@@ -12,6 +12,56 @@ process getParams {
     """
 }
 
+process medakaVersion {
+    label "medaka"
+    cpus 1 
+    memory "2GB"
+    output:
+        path "medaka_version.txt"
+    """
+    medaka --version | sed 's/ /,/' >> "medaka_version.txt"
+    """
+}
+
+process getVersions {
+    label "plasmid"
+    cpus 1
+    memory "2GB"
+    input:
+        path "input_versions.txt"
+    output:
+        path "versions.txt"
+    script:
+    """
+    cat "input_versions.txt" >> "versions.txt"
+    minimap2 --version | sed 's/^/minimap2,/' >> versions.txt
+    samtools --version | head -n 1 | sed 's/ /,/' >> versions.txt
+    dupscoop --version | sed 's/ /,/' >> versions.txt
+    bedtools --version | sed 's/ /,/' >> versions.txt
+    flye --version |  sed 's/^/flye,/' >> versions.txt
+    fastcat --version | sed 's/^/fastcat,/' >> versions.txt
+    rasusa --version | sed 's/ /,/' >> versions.txt
+    python -c "import spoa; print(spoa.__version__)" | sed 's/^/spoa,/'  >> versions.txt
+    python -c "import pandas; print(pandas.__version__)" | sed 's/^/pandas,/'  >> versions.txt
+    python -c "import plannotate; print(plannotate.__version__)" | sed 's/^/plannotate,/'  >> versions.txt
+    python -c "import bokeh; print(bokeh.__version__)" | sed 's/^/bokeh,/'  >> versions.txt
+    """
+}
+
+process sampleStat {
+    label "plasmid"
+    cpus 3
+    memory "2 GB"
+    input:
+        tuple val(meta), path('basecalled.fastq')
+    output:
+        path("*.stats.tsv"), optional: true
+    script:
+    """
+    fastcat -s "${meta.alias}" -r "${meta.alias}.stats.tsv" basecalled.fastq
+    """
+}
+
 process downsampledStats {
     label "plasmid"
     cpus 1
@@ -21,9 +71,9 @@ process downsampledStats {
     output:
         path "*.stats", optional: true
     """
-    fastcat -s ${meta.} -r ${sample_id}.downsampled $sample > /dev/null
-    if [[ "\$(wc -l <"${sample_id}.downsampled")" -ge "2" ]];  then
-        mv ${sample_id}.downsampled ${sample_id}.stats
+    fastcat -s ${meta.alias} -r ${meta.alias}.downsampled $sample > /dev/null
+    if [[ "\$(wc -l <"${meta.alias}.downsampled")" -ge "2" ]];  then
+        mv ${meta.alias}.downsampled ${meta.alias}.stats
     fi
     """
 }
@@ -35,36 +85,11 @@ process assemblyStat {
     input:
         tuple val(meta), path("assembly.fastq")
     output:
-        path "${meta.alias}.assembly_stats.tsv"
+        path "*.stats.tsv", optional: true
     script:
     """
-    fastcat -s "${meta.alias}" -r "${meta.alias}.assembly_stats.tsv" assembly.fastq
+    fastcat -s "${meta.alias}" -r "${meta.alias}.stats.tsv" assembly.fastq
     """
-}
-process fastcat {
-    label "wf_common"
-    cpus 3
-    memory "2 GB"
-    input:
-        tuple val(meta), path("input")
-    output:
-        tuple val(meta), path("seqs.fastq.gz"), path("fastcat_stats")
-    script:
-        String out = "seqs.fastq.gz"
-        String fastcat_stats_outdir = "fastcat_stats"
-        """
-        mkdir $fastcat_stats_outdir
-        fastcat \
-            -s ${meta.alias} \
-            -r >(bgzip -c > per-read-stats.tsv.gz) \
-            -f per-file-stats.tsv \
-            input \
-            | bgzip > $out
-
-        # extract the run IDs from the per-read stats
-        csvtk cut -tf runid per-read-stats.tsv.gz \
-        | csvtk del-header | sort | uniq > run_ids
-        """
 }
 
 process perReadstats {

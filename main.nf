@@ -7,6 +7,11 @@ include { downSampling } from "./module/assembleCore"
 include { assembling } from "./module/assembleCore"
 include { medakaPolish } from "./module/assembleCore"
 include { correcting } from "./module/assembleCore"
+include { medakaVersion } from "./module/utils"
+include { getVersions } from "./module/utils"
+include { getParams } from "./module/utils"
+include { report } from "./module/report"
+
 def processCsvRow(row) {
     Channel.of(row)
 }
@@ -35,7 +40,9 @@ workflow {
     aout = assembling(dout)
     mout = medakaPolish(bout, aout)
     dcout = correcting(mout)
-
+    medaka_version = medakaVersion()
+    software_versions = getVersions(medaka_version)
+    workflow_params = getParams()
     report = report(
         downsampled_stats.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         final_status,
