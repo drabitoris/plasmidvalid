@@ -39,7 +39,6 @@ workflow {
         fromPath("${params.sample_sheet}")
         .splitCsv(header: true, sep: ',', strip: true)
         .set { csvrow }
-    meta = basecall(csvrow).meta
     bout = basecall(csvrow) 
     tout = trimming(bout)
     dout = downSampling(tout)
