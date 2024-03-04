@@ -39,7 +39,7 @@ workflow {
     report = report(
         downsampled_stats.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         final_status,
-        sample_fastqs.stats.collect(),x
+        sample_fastqs.stats.collect(),
         filtered_stats,
         software_versions.collect(),
         workflow_params,

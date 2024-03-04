@@ -21,20 +21,32 @@ process downsampledStats {
     output:
         path "*.stats", optional: true
     """
-    fastcat -s ${sample_id} -r ${sample_id}.downsampled $sample > /dev/null
+    fastcat -s ${meta.} -r ${sample_id}.downsampled $sample > /dev/null
     if [[ "\$(wc -l <"${sample_id}.downsampled")" -ge "2" ]];  then
         mv ${sample_id}.downsampled ${sample_id}.stats
     fi
     """
 }
 
+process assemblyStat {
+    label "plasmid"
+    cpus 1
+    memory "2GB"
+    input:
+        tuple val(meta), path("assembly.fastq")
+    output:
+        path "${meta.alias}.assembly_stats.tsv"
+    script:
+    """
+    fastcat -s "${meta.alias}" -r "${meta.alias}.assembly_stats.tsv" assembly.fastq
+    """
+}
 process fastcat {
     label "wf_common"
     cpus 3
     memory "2 GB"
     input:
         tuple val(meta), path("input")
-        val extra_args
     output:
         tuple val(meta), path("seqs.fastq.gz"), path("fastcat_stats")
     script:
@@ -43,20 +55,19 @@ process fastcat {
         """
         mkdir $fastcat_stats_outdir
         fastcat \
-            -s ${meta["alias"]} \
-            -r >(bgzip -c > $fastcat_stats_outdir/per-read-stats.tsv.gz) \
-            -f $fastcat_stats_outdir/per-file-stats.tsv \
-            $extra_args \
+            -s ${meta.alias} \
+            -r >(bgzip -c > per-read-stats.tsv.gz) \
+            -f per-file-stats.tsv \
             input \
             | bgzip > $out
 
         # extract the run IDs from the per-read stats
-        csvtk cut -tf runid $fastcat_stats_outdir/per-read-stats.tsv.gz \
-        | csvtk del-header | sort | uniq > $fastcat_stats_outdir/run_ids
+        csvtk cut -tf runid per-read-stats.tsv.gz \
+        | csvtk del-header | sort | uniq > run_ids
         """
 }
 
-process readStats {
+process perReadstats {
     label "plasmid"
     cpus params.threads
     memory "2GB"
@@ -77,9 +88,7 @@ process readStats {
         int value = (expected_depth.toInteger()) * 0.8
         int bgzip_threads = task.cpus == 1 ? 1 : task.cpus - 1
     """
-    STATUS="Failed due to insufficient reads"
-    mv per-read-stats.tsv.gz ${meta.alias}.stats.gz
-    fastcat -s ${meta.alias} -r ${meta.alias}.interim $extra_args input.fastq.gz \
+    fastcat -s ${meta.alias} -r ${meta.alias}.interim input.fastq.gz \
     | bgzip -@ $bgzip_threads > interim.fastq.gz
     if [[ "\$(wc -l < "${meta.alias}.interim")" -ge "$value" ]]; then
         mv interim.fastq.gz ${meta.alias}.fastq.gz
