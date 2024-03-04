@@ -101,33 +101,3 @@ process exampleStatus {
     STATUS="boo_STATUS"
     """
 }
-
-process perReadstats {
-    label "plasmid"
-    cpus params.threads
-    memory "2GB"
-    input:
-        tuple val(meta),
-            path("basecalled.fastq"),
-            path("per-read-stats.tsv.gz"),
-            val(approx_size)
-        val extra_args
-    output:
-        tuple val(meta.alias), path("${meta.alias}.fastq.gz"), val(approx_size),
-            optional: true, emit: sample
-        path "${meta.alias}.stats.gz", emit: stats
-        tuple val(meta.alias), env(STATUS), emit: status
-    script:
-        def expected_depth = "$params.assm_coverage"
-        // a little heuristic to decide if we have enough data
-        int value = (expected_depth.toInteger()) * 0.8
-        int bgzip_threads = task.cpus == 1 ? 1 : task.cpus - 1
-    """
-    fastcat -s ${meta.alias} -r ${meta.alias}.interim input.fastq.gz \
-    | bgzip -@ $bgzip_threads > interim.fastq.gz
-    if [[ "\$(wc -l < "${meta.alias}.interim")" -ge "$value" ]]; then
-        mv interim.fastq.gz ${meta.alias}.fastq.gz
-        STATUS="Completed successfully"
-    fi
-    """
-}
