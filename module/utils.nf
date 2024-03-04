@@ -1,3 +1,5 @@
+import groovy.json.JsonBuilder
+
 process getParams {
     label "plasmid"
     cpus 1
