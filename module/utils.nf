@@ -73,7 +73,7 @@ process downsampledStats {
     output:
         path "*.stats", optional: true
     """
-    fastcat -s ${meta.alias} -r ${meta.alias}.downsampled $sample > /dev/null
+    fastcat -s ${meta.alias} -r ${meta.alias}.downsampled downsampled.fastq.gz > /dev/null
     if [[ "\$(wc -l <"${meta.alias}.downsampled")" -ge "2" ]];  then
         mv ${meta.alias}.downsampled ${meta.alias}.stats
     fi
