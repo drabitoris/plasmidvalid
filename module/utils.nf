@@ -92,6 +92,16 @@ process assemblyStat {
     """
 }
 
+process exampleStatus {
+    label "plasmid"
+    output:
+        env(STATUS), emit: status
+    script:
+    """
+    STATUS="boo_STATUS"
+    """
+}
+
 process perReadstats {
     label "plasmid"
     cpus params.threads

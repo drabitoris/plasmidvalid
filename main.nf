@@ -7,9 +7,14 @@ include { downSampling } from "./module/assembleCore"
 include { assembling } from "./module/assembleCore"
 include { medakaPolish } from "./module/assembleCore"
 include { correcting } from "./module/assembleCore"
+include { annotating } from "./module/assembleCore"
 include { medakaVersion } from "./module/utils"
 include { getVersions } from "./module/utils"
 include { getParams } from "./module/utils"
+include { sampleStat } from "./module/utils"
+include { downsampledStats } from "./module/utils"
+include { assemblyStat } from "./module/utils"
+include { exampleStatus } from "./module/utils"
 include { report } from "./module/report"
 
 def processCsvRow(row) {
@@ -40,21 +45,36 @@ workflow {
     aout = assembling(dout)
     mout = medakaPolish(bout, aout)
     dcout = correcting(mout)
+    annotation = annotating(dcout, database)
+
+    database = file("$projectDir/data/OPTIONAL_FILE")
+    if (params.db_directory != null){
+            database = file(params.db_directory, type: "dir")
+    }
+    samplestat = sampleStat(bout)
+    filteredstat = samplestat
+    downsampledstat = downsampledStats(dout)
+    assemblystat = assemblyStat(aout)
+    status = exampleStatus()
     medaka_version = medakaVersion()
     software_versions = getVersions(medaka_version)
     workflow_params = getParams()
+    insert = Channel.empty()
+    qc_insert = Channel.empty()
+    maf = Channel.empty()
+
     report = report(
-        downsampled_stats.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
-        final_status,
-        sample_fastqs.stats.collect(),
-        filtered_stats,
+        downsampledstat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
+        status,
+        samplestat.collect(),
+        filteredstat.collect(),
         software_versions.collect(),
         workflow_params,
         annotation.report,
-        insert.json,
+        insert.json.ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         annotation.json,
         qc_insert.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
-        assembly_quality.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
-        mafs.map{ meta, maf -> maf}.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE"))
+        assemblystat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
+        mafs.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE"))
         )
 }
