@@ -1,6 +1,7 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl = 2
+import groovy.json.JsonBuilder
 include { basecall } from "./module/basecall"
 include { trimming } from "./module/assembleCore"
 include { downSampling } from "./module/assembleCore"
