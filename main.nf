@@ -71,7 +71,7 @@ workflow {
         software_versions.collect(),
         workflow_params,
         annotation.report,
-        insert.json.ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
+        insert.ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         annotation.json,
         qc_insert.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         assemblystat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
