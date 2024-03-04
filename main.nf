@@ -61,7 +61,7 @@ workflow {
     workflow_params = getParams()
     insert = Channel.empty()
     qc_insert = Channel.empty()
-    maf = Channel.empty()
+    mafs = Channel.empty()
 
     report = report(
         downsampledstat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
