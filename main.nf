@@ -43,8 +43,7 @@ workflow {
     tout = trimming(bout)
     dout = downSampling(tout)
     aout = assembling(dout)
-    mouta = medakaPolish(bout, aout).fasta
-    moutq = medakaPolish(bout, aout).fastq
+    mouta,moutq = medakaPolish(bout, aout)
     dcout = correcting(mouta)
     annotation = annotating(dcout, database)
 
