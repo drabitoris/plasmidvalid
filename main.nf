@@ -46,7 +46,7 @@ workflow {
     aout = assembling(dout)
     mout = medakaPolish(bout, aout)
     dcout = correcting(mout.fasta)
-    annotation = annotating(dcout, database)
+    annotation = annotating(dcout.map { it -> it[1] }.collect(), database)
 
     database = file("$projectDir/data/OPTIONAL_FILE")
     if (params.db_directory != null){
