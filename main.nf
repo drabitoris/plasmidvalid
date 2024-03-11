@@ -54,7 +54,7 @@ workflow {
     samplestat = sampleStat(bout)
     filteredstat = samplestat
     downsampledstat = downsampledStats(dout)
-    assemblystat = assemblyStat(aout)
+    assemblystat = assemblyStat(mout)
     status = exampleStatus()
     medaka_version = medakaVersion()
     software_versions = getVersions(medaka_version)

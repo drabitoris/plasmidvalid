@@ -66,7 +66,7 @@ process medakaPolish {
     medaka_consensus -i basecallfastq.fastq -d flyedraft.fasta -m ${params.medaka_model} -o . -t 8 -f -q
     echo ">${meta.barcode}" >> ${meta.barcode}.polished.fasta
     sed "2q;d" consensus.fasta >> ${meta.barcode}.polished.fasta
-    mv consensus.fasta ${meta.barcode}.polished.fastq
+    mv consensus.fasta ${meta.alias}.polished.fastq
     """
 }
 

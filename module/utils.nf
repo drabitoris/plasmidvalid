@@ -85,12 +85,12 @@ process assemblyStat {
     cpus 1
     memory "2GB"
     input:
-        tuple val(meta), path("assembly.fastq")
+        tuple val(meta), path("polished.fasta")
     output:
         path "*.stats.tsv", optional: true
     script:
     """
-    fastcat -s "${meta.alias}" -r "${meta.alias}.stats.tsv" assembly.fastq
+    fastcat -s "${meta.alias}" -r "${meta.alias}.stats.tsv" polished.fasta
     """
 }
 
