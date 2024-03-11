@@ -223,9 +223,9 @@ def main(args):
     make_yaml(args.database)
     json_file = open("plannotate.json", "a")
     if args.sequences:
-        for filename in args.sequences:
+        for filename in os.listdir(args.sequences):
             name = str(filename).split('.corrected')[0]
-            file = filename
+            file = os.path.join(args.sequences, filename)
             try:
                 tup_dic, report, plannotate_dic = attempt_annotation(
                     file, name)

@@ -87,7 +87,7 @@ process correcting {
 process annotating {
     label "plasmid"
     input:
-        tuple val(meta), path('corrected.fasta')
+        tuple val(meta), path "assemblies/*"
         path annotation_database
     output:
         path "feature_table.txt", emit: feature_table
@@ -98,7 +98,12 @@ process annotating {
     script:
         def database =  annotation_database.name.startsWith('OPTIONAL_FILE') ? "Default" : "${annotation_database}"
     """
-    workflow-glue run_plannotate --sequences corrected.fasta --database $database
+    if [ -e "assemblies/OPTIONAL_FILE" ]; then
+        assemblies=""
+    else
+        assemblies="--sequences assemblies/"
+    fi        
+    workflow-glue run_plannotate --sequences \$assemblies --database $database
     """
 }
 
