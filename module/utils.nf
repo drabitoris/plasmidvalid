@@ -103,3 +103,21 @@ process exampleStatus {
     STATUS="boo_STATUS"
     """
 }
+
+process assemblyMafs {
+    label "plasmid"
+    cpus 1
+    memory "2GB"
+    input:
+        tuple val(meta), path("assembly.fasta")
+    output:
+        tuple val(meta), path("${meta.alias}.assembly.maf")
+    // set -m(multiplicity) to 10000 to increase sensitivity from default of 10
+    // for assemblies this small computational cost is low
+    // reduce offset distance for suppressing repeats inside exact matches -w 
+    // from default of 1000 to 10.
+    """
+    lastdb db.lastdb "assembly.fasta"
+    lastal -m 10000 -w 10 db.lastdb "assembly.fasta" > "${meta.alias}.assembly.maf"
+    """
+}

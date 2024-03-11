@@ -61,7 +61,7 @@ workflow {
     workflow_params = getParams()
     insert = Channel.empty()
     qc_insert = Channel.empty()
-    mafs = Channel.empty()
+    mafs = assemblyMafs(aout)
 
     report = report(
         downsampledstat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
@@ -75,6 +75,6 @@ workflow {
         annotation.json,
         qc_insert.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         assemblystat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
-        mafs.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE"))
+        mafs.map{ meta, maf -> maf}.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE"))
         )
 }
