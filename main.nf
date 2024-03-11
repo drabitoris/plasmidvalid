@@ -18,6 +18,7 @@ include { assemblyStat } from "./module/utils"
 include { exampleStatus } from "./module/utils"
 include { report } from "./module/assembleCore"
 include { assemblyMafs } from "./module/utils"
+include { exampleinserts } from "./module/utils"
 
 def processCsvRow(row) {
     Channel.of(row)
@@ -61,7 +62,7 @@ workflow {
     medaka_version = medakaVersion()
     software_versions = getVersions(medaka_version)
     workflow_params = getParams()
-    insert = Channel.empty()
+    insert = exampleinserts()
     qc_insert = Channel.empty()
     mafs = assemblyMafs(aout)
 
@@ -73,7 +74,7 @@ workflow {
         software_versions.collect(),
         workflow_params,
         annotation.report,
-        insert.ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
+        insert.json,
         annotation.json,
         qc_insert.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         assemblystat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),

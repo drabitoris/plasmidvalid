@@ -121,3 +121,13 @@ process assemblyMafs {
     lastal -m 10000 -w 10 db.lastdb "assembly.fasta" > "${meta.alias}.assembly.maf"
     """
 }
+
+process exampleinserts {
+    label "plasmid"
+    output:
+        path "*.json", emit: json
+    script:
+    """
+    touch insert.json
+    """
+}
