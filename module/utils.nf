@@ -97,10 +97,10 @@ process assemblyStat {
 process exampleStatus {
     label "plasmid"
     output:
-        env(STATUS), emit: status
+        env(STATUS)
     script:
     """
-    STATUS="boo_STATUS"
+    STATUS="Completed successfully"
     """
 }
 
