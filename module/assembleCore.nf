@@ -103,7 +103,7 @@ process annotating {
     else
         assemblies="--sequences assemblies/"
     fi        
-    workflow-glue run_plannotate --sequences \$assemblies --database $database
+    workflow-glue run_plannotate \$assemblies --database $database
     """
 }
 
