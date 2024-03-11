@@ -56,7 +56,7 @@ workflow {
     filteredstat = samplestat
     downsampledstat = downsampledStats(dout)
     assemblystat = assemblyStat(mout.fastq)
-    final_status = dcout.status
+    final_status = dcout.status.groupTuple().map { it -> it[0].toString() + ',' + it[1].toString() }
     final_status = final_status.collectFile(name: 'final_status.csv', newLine: true)
     medaka_version = medakaVersion()
     software_versions = getVersions(medaka_version)

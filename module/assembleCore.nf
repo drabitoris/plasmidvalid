@@ -77,7 +77,7 @@ process correcting {
         tuple val(meta), path('polished.fasta')
     output:
         tuple val(meta), path('*.corrected.fasta'), optional: true, emit: corrected
-        env(STATUS), emit: status
+        tuple val(meta.alias), env(STATUS), emit: status
     script:
 
     """
