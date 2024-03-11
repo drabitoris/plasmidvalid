@@ -17,6 +17,7 @@ include { downsampledStats } from "./module/utils"
 include { assemblyStat } from "./module/utils"
 include { exampleStatus } from "./module/utils"
 include { report } from "./module/assembleCore"
+include { assemblyMafs } from "./module/assembleCore"
 
 def processCsvRow(row) {
     Channel.of(row)
