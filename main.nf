@@ -46,7 +46,7 @@ workflow {
     aout = assembling(dout)
     mout = medakaPolish(bout, aout)
     dcout = correcting(mout.fasta)
-    annotation = annotating(dcout.map { it -> it[1] }.collect(), database)
+    annotation = annotating(dcout.corrected.map { it -> it[1] }.collect(), database)
 
     database = file("$projectDir/data/OPTIONAL_FILE")
     if (params.db_directory != null){
@@ -56,7 +56,8 @@ workflow {
     filteredstat = samplestat
     downsampledstat = downsampledStats(dout)
     assemblystat = assemblyStat(mout.fastq)
-    status = exampleStatus()
+    final_status = dcout.status
+    final_status = final_status.collectFile(name: 'final_status.csv', newLine: true)
     medaka_version = medakaVersion()
     software_versions = getVersions(medaka_version)
     workflow_params = getParams()
@@ -66,7 +67,7 @@ workflow {
 
     report = report(
         downsampledstat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
-        status,
+        final_status,
         samplestat.collect(),
         filteredstat.collect(),
         software_versions.collect(),

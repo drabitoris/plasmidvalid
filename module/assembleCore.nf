@@ -76,11 +76,13 @@ process correcting {
     input:
         tuple val(meta), path('polished.fasta')
     output:
-        tuple val(meta), path('*.corrected.fasta')
+        tuple val(meta), path('*.corrected.fasta'), optional: true, emit: corrected
+        tuple val(sample_id), env(STATUS), emit: status
     script:
 
     """
     dupscoop --ref polished.fasta --min 500 -s 0.7 -o ${meta.barcode}.corrected.fasta -d 20
+    STATUS="Completed successfully"
     """
 }
 
