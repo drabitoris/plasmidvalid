@@ -87,7 +87,7 @@ process correcting {
 process annotating {
     label "plasmid"
     input:
-        tuple val(meta), path "assemblies/*"
+        path "assemblies/*"
         path annotation_database
     output:
         path "feature_table.txt", emit: feature_table
