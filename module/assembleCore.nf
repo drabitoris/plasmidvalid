@@ -81,7 +81,7 @@ process correcting {
     script:
 
     """
-    dupscoop --ref polished.fasta --min 500 -s 0.7 -o ${meta.barcode}.corrected.fasta -d 20
+    dupscoop --ref polished.fasta --min 500 -s 0.7 -o ${meta.alias}.corrected.fasta -d 20
     STATUS="Completed successfully"
     """
 }

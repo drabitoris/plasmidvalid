@@ -87,10 +87,10 @@ process assemblyStat {
     input:
         tuple val(meta), path("polished.fasta")
     output:
-        path "*.stats.tsv", optional: true
+        path "*.assembly_stats.tsv", optional: true
     script:
     """
-    fastcat -s "${meta.alias}" -r "${meta.alias}.stats.tsv" polished.fasta
+    fastcat -s "${meta.alias}" -r "${meta.alias}.assembly_stats.tsv" polished.fasta
     """
 }
 

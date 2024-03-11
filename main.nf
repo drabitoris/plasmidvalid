@@ -54,10 +54,10 @@ workflow {
             database = file(params.db_directory, type: "dir")
     }
     samplestat = sampleStat(bout)
-    filteredstat = samplestat
+    filteredstat = Channel.empty()
     downsampledstat = downsampledStats(dout)
     assemblystat = assemblyStat(mout.fastq)
-    final_status = dcout.status.groupTuple().map { it -> it[0].toString() + ',' + it[1].toString() }
+    final_status = dcout.status.groupTuple().map { it -> it[0].toString() + ',' + it[1][-1].toString() }
     final_status = final_status.collectFile(name: 'final_status.csv', newLine: true)
     medaka_version = medakaVersion()
     software_versions = getVersions(medaka_version)
@@ -70,7 +70,7 @@ workflow {
         downsampledstat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         final_status,
         samplestat.collect(),
-        filteredstat.collect(),
+        filteredstat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         software_versions.collect(),
         workflow_params,
         annotation.report,
