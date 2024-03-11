@@ -43,8 +43,9 @@ workflow {
     tout = trimming(bout)
     dout = downSampling(tout)
     aout = assembling(dout)
-    mout = medakaPolish(bout, aout)
-    dcout = correcting(mout)
+    mouta = medakaPolish(bout, aout).fasta
+    moutq = medakaPolish(bout, aout).fastq
+    dcout = correcting(mouta)
     annotation = annotating(dcout, database)
 
     database = file("$projectDir/data/OPTIONAL_FILE")
@@ -54,7 +55,7 @@ workflow {
     samplestat = sampleStat(bout)
     filteredstat = samplestat
     downsampledstat = downsampledStats(dout)
-    assemblystat = assemblyStat(mout)
+    assemblystat = assemblyStat(moutq)
     status = exampleStatus()
     medaka_version = medakaVersion()
     software_versions = getVersions(medaka_version)
