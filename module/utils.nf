@@ -126,9 +126,9 @@ process output {
     // publish inputs to output directory
     label "plasmid"
     publishDir "${params.out_dir}", mode: 'copy'
-        file fname
+        file ("report.html")
     output:
-        file fname
+        file ("report.html")
     """
     echo "Writing output files"
     """
