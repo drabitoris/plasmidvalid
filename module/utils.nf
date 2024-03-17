@@ -126,6 +126,7 @@ process output {
     // publish inputs to output directory
     label "plasmid"
     publishDir "${params.out_dir}", mode: 'copy'
+    input:
         file ("report.html")
     output:
         file ("report.html")
