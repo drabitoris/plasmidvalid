@@ -19,6 +19,7 @@ include { exampleStatus } from "./module/utils"
 include { report } from "./module/assembleCore"
 include { assemblyMafs } from "./module/utils"
 include { exampleinserts } from "./module/utils"
+include { output } from "./module/utils"
 
 def processCsvRow(row) {
     Channel.of(row)
@@ -80,4 +81,5 @@ workflow {
         assemblystat.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE")),
         mafs.map{ meta, maf -> maf}.collect().ifEmpty(file("$projectDir/data/OPTIONAL_FILE"))
         )
+    output(report.html)
 }

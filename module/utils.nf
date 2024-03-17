@@ -122,6 +122,18 @@ process assemblyMafs {
     """
 }
 
+process output {
+    // publish inputs to output directory
+    label "plasmid"
+    publishDir "${params.out_dir}", mode: 'copy'
+        file fname
+    output:
+        file fname
+    """
+    echo "Writing output files"
+    """
+}
+
 process exampleinserts {
     label "plasmid"
     output:
