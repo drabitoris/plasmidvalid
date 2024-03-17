@@ -73,6 +73,8 @@ process medakaPolish {
 
 process correcting {
     label "plasmid"
+    cpus 8
+    memory "16GB"
     input:
         tuple val(meta), path('polished.fasta')
     output:
