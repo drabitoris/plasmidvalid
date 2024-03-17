@@ -35,6 +35,8 @@ process downSampling {
 
 process assembling {
     label "plasmid"
+    cpus 8
+    memory "16GB"
     input:
         tuple val(meta), path('downsampled.fastq.gz')
     output:
